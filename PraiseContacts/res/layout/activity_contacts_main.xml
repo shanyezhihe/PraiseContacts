@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ecf0f7"  >
+	
+	<include 
+	    android:layout_height="40dp"
+	    android:layout_width="match_parent"
+	    layout="@layout/titlebar_contacts_page"
+	    android:layout_alignParentTop="true"/>
+	 <FrameLayout
+        android:id="@+id/id_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         android:layout_marginTop="40dp"
+         android:layout_marginBottom="40dp"/>
+	
+	<include
+	    android:layout_height="40dp"
+	    android:layout_width="match_parent"
+	    layout="@layout/bottom_bar_contacts_page"
+	    android:layout_alignParentBottom="true"
+	    
+	     />
+    
+   
+</RelativeLayout>
+
