@@ -3,11 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <TextView 
-      android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+      android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_centerInParent="true"
         android:text="联系人"
         
         android:textColor="#000000"/>
+    
+	<include
+	    android:layout_height="50dp"
+	    android:layout_width="match_parent"
+	    layout="@layout/bottom_bar_contacts_page"
+	    android:layout_alignParentBottom="true"
+	    
+	     />
 
 </RelativeLayout>

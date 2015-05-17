@@ -30,13 +30,6 @@
     
         
 	
-	<include
-	    android:layout_height="40dp"
-	    android:layout_width="match_parent"
-	    layout="@layout/bottom_bar_contacts_page"
-	    android:layout_alignParentBottom="true"
-	    
-	     />
     
    
 </LinearLayout>

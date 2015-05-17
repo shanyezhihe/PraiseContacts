@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#C6E2FF" >
+  <include 
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      layout="@layout/buildcontacttitlebar"/> 
+      <View 
+          android:layout_height="20dp"
+          android:layout_width="match_parent"/>
+  <LinearLayout 
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginBottom="0dp"
+      android:layout_marginLeft="7dp"
+      android:layout_marginRight="7dp"
+      android:orientation="vertical"
+      >
+      <LinearLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="91dp"
+          android:orientation="horizontal">
+          <ImageView 
+              android:layout_height="match_parent"
+              android:layout_width="100dp"
+              android:layout_weight="2"
+              android:src="@drawable/people_icon"
+              android:layout_gravity="center"
+              />
+          <View 
+              android:layout_width="10dp"
+              android:layout_height="match_parent"/>
+          <LinearLayout 
+              android:layout_height="match_parent"
+              android:layout_width="300dp"
+              android:layout_weight="4"
+              android:orientation="vertical"
+              android:background="@drawable/shape_white">
+              <EditText 
+                  android:id="@+id/name_edit"
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp"
+                  android:hint=" 姓名"
+                  android:textColorHint="#ffffff"
+                  android:inputType="textPersonName"
+                   android:layout_gravity="center_vertical"
+                  android:drawableLeft="@drawable/button_205"
+                  
+                   android:background="@null"/>
+              <View 
+                  android:layout_width="match_parent"
+                  android:layout_height="0.5dp"
+                  android:background="#0A0A0A"/>
+               <EditText 
+                   android:id="@+id/career_edit"
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp"
+                  android:hint=" 职位"
+                  android:textColorHint="#ffffff"
+                  android:layout_gravity="center_vertical"
+                  android:drawableLeft="@drawable/icon_career"
+                  android:layout_marginTop="5dp"
+                   android:background="@null"/>
+          </LinearLayout>
+      </LinearLayout>
+       <View 
+      android:layout_height="20dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/login_phone"
+            />
+        
+          <EditText
+            android:id="@+id/phone_edit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入手机号"
+            android:inputType="phone"
+            
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+    
+     <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/email_icon"
+            />
+        
+          <EditText
+            android:id="@+id/email_edit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入邮件地址"
+            android:inputType="textEmailAddress"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+      <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/qqicon"
+            />
+        
+          <EditText
+            android:id="@+id/qqnum_edit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入QQ号码"
+            android:inputType="number"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+    
+     <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/wechat_icon"
+            />
+        
+          <EditText
+            android:id="@+id/wechatnum_edit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入微信号"
+            android:inputType="number"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+    
+      <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/add_icon"
+            />
+        
+      <LinearLayout 
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+       android:layout_gravity="center_vertical"
+      android:orientation="horizontal"
+      >
+   <Spinner
+        android:id="@+id/provinceSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:spinnerMode="dialog"
+          
+        android:layout_weight="1" />
+
+    <Spinner
+        android:id="@+id/citySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+         android:spinnerMode="dialog"
+        android:layout_weight="1" />
+
+    <Spinner
+        android:id="@+id/districtSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:layout_gravity="center_vertical"
+          android:spinnerMode="dialog"
+        android:layout_weight="1" />
+   
+</LinearLayout>
+          
+        
+    </LinearLayout>
+    
+  </LinearLayout> 
+  
+ 
+</LinearLayout>

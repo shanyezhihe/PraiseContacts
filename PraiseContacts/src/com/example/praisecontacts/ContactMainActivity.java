@@ -3,6 +3,8 @@ package com.example.praisecontacts;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -28,7 +30,7 @@ import android.widget.TextView;
 	private TextView TVcontacts;
 	private TextView TVweather;
 	
-	private TextView TVbulidContacts;
+	
 	
 	private int COLOR_GRAY = 0xFF7A7A7A;
 	private int COLOR_GREEN = 0xFF006400;
@@ -50,15 +52,14 @@ import android.widget.TextView;
         TVcontacts=(TextView) findViewById(R.id.contacts);
         TVweather=(TextView) findViewById(R.id.wearther);
         myViewPager=(ViewPager) findViewById(R.id.id_viewpager);
-        TVbulidContacts=(TextView) findViewById(R.id.build_contacts);
+      
         
         
+      
         TVcall.setOnClickListener(this);
         TVcontacts.setOnClickListener(this);
         TVweather.setOnClickListener(this);
-        TVcall.setOnClickListener(this);
-        TVcontacts.setOnClickListener(this);
-        TVweather.setOnClickListener(this);
+       
        myFragmentManager = getSupportFragmentManager();
   	   myFragmentTransaction = myFragmentManager.beginTransaction();
         
@@ -200,6 +201,7 @@ import android.widget.TextView;
 			TVcontacts.setTextSize(12);
 			TVcall.setTextSize(12);
 		}
+	
 		myFragmentTransaction.commit();
 	}
 }
