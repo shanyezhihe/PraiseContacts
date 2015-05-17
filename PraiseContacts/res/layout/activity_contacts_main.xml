@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#ecf0f7"  >
 	
 	<include 
@@ -9,12 +10,25 @@
 	    android:layout_width="match_parent"
 	    layout="@layout/titlebar_contacts_page"
 	    android:layout_alignParentTop="true"/>
-	 <FrameLayout
-        android:id="@+id/id_content"
+	<android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         android:layout_marginTop="40dp"
-         android:layout_marginBottom="40dp"/>
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1.0"
+        android:background="#f7f9fd"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+	
+<!-- 	 <FrameLayout -->
+<!--         android:id="@+id/id_content" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--          android:layout_marginTop="40dp" -->
+<!--          android:layout_marginBottom="40dp" -->
+<!-- 	 /> -->
+    
+        
 	
 	<include
 	    android:layout_height="40dp"
@@ -25,5 +39,5 @@
 	     />
     
    
-</RelativeLayout>
+</LinearLayout>
 
