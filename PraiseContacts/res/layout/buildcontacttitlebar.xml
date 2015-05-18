@@ -44,7 +44,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
         android:gravity="center"
-        android:text="保存"
+        android:text="重置"
         android:background="@drawable/coners_bg"
 
         android:textSize="15sp" />

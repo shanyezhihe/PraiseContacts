@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+   <LinearLayout 
+       android:layout_height="140dp"
+       android:layout_width="match_parent"
+       android:background="@drawable/check_bg">
+       
+       <ImageView 
+           android:id="@+id/checkbackid"
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:layout_marginTop="10dp"
+           android:layout_marginLeft="10dp"
+           android:src="@drawable/check_back"/>
+       <TextView 
+           android:layout_marginTop="20dp"
+           android:layout_marginLeft="70dp"
+           android:id="@+id/check_contact_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="#8B2323"
+           android:text="北亭"
+           android:textStyle="bold"
+           android:textSize="23sp"/>
+   </LinearLayout> 
+   <include 
+       android:layout_width="match_parent"
+       android:layout_height="40dp"
+       layout="@layout/check_midle_bar"/>
+</LinearLayout>

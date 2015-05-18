@@ -3,8 +3,6 @@ package com.example.praisecontacts;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -29,16 +28,24 @@ import android.widget.TextView;
 	private TextView TVcall;
 	private TextView TVcontacts;
 	private TextView TVweather;
+	private LinearLayout contacttitle;
 	
 	
 	
-	private int COLOR_GRAY = 0xFF7A7A7A;
-	private int COLOR_GREEN = 0xFF006400;
+	private int COLOR_GRAY = 0xFFFFFFFF;
+	private int COLOR_GREEN = 0xFF4B0082;
+	private int COLOR_BLUE=0XFFAEC5E8;
+	private int COLOR_YELLO=0XFFFFD39B;
+	private int COLOR_QING=0XFF76EEC6;
+	private int COLOR_BLACK=0xFF000000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts_main);
         getActionBar().hide();
+        
+        contacttitle=(LinearLayout) findViewById(R.id.contacttitle);
+        
         callFragment=new CallFrament();
         contactsFragment=new ContactsFragment();
         weatherFragment=new WeartherFrament();
@@ -136,6 +143,7 @@ import android.widget.TextView;
 			TVcall.setTextColor(COLOR_GREEN);
 			TVcontacts.setTextColor(COLOR_GRAY);
 			TVweather.setTextColor(COLOR_GRAY);
+			contacttitle.setBackgroundColor(COLOR_QING);
 			TVcontacts.setTextSize(12);
 			TVweather.setTextSize(12);
 			TVcall.setTextSize(20);
@@ -146,6 +154,7 @@ import android.widget.TextView;
 			TVcall.setTextColor(COLOR_GRAY);
 			TVcontacts.setTextColor(COLOR_GREEN);
 			TVweather.setTextColor(COLOR_GRAY);
+			contacttitle.setBackgroundColor(COLOR_BLUE);
 			TVcontacts.setTextSize(20);
 			TVweather.setTextSize(12);
 			TVcall.setTextSize(12);
@@ -156,6 +165,7 @@ import android.widget.TextView;
 			TVcall.setTextColor(COLOR_GRAY);
 			TVcontacts.setTextColor(COLOR_GRAY);
 			TVweather.setTextColor(COLOR_GREEN);
+			contacttitle.setBackgroundColor(COLOR_YELLO);
 			TVweather.setTextSize(20);
 			TVcontacts.setTextSize(12);
 			TVcall.setTextSize(12);
@@ -177,6 +187,7 @@ import android.widget.TextView;
 			TVcall.setTextColor(COLOR_GREEN);
 			TVcontacts.setTextColor(COLOR_GRAY);
 			TVweather.setTextColor(COLOR_GRAY);
+			contacttitle.setBackgroundColor(COLOR_QING);
 			TVcontacts.setTextSize(12);
 			TVweather.setTextSize(12);
 			TVcall.setTextSize(20);
@@ -187,6 +198,7 @@ import android.widget.TextView;
 			TVcall.setTextColor(COLOR_GRAY);
 			TVcontacts.setTextColor(COLOR_GREEN);
 			TVweather.setTextColor(COLOR_GRAY);
+			contacttitle.setBackgroundColor(COLOR_BLUE);
 			TVcontacts.setTextSize(20);
 			TVweather.setTextSize(12);
 			TVcall.setTextSize(12);
@@ -197,6 +209,7 @@ import android.widget.TextView;
 			TVcall.setTextColor(COLOR_GRAY);
 			TVcontacts.setTextColor(COLOR_GRAY);
 			TVweather.setTextColor(COLOR_GREEN);
+			contacttitle.setBackgroundColor(COLOR_YELLO);
 			TVweather.setTextSize(20);
 			TVcontacts.setTextSize(12);
 			TVcall.setTextSize(12);
