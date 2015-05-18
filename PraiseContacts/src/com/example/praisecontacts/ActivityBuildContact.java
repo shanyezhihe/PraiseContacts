@@ -2,6 +2,8 @@ package com.example.praisecontacts;
 
 
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,11 +49,11 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	private TextView btn_reset;
 	
 	private EditText ETname;
-	private EditText ETcareer;
-	private EditText ETphonenum;
-	private EditText ETemail;
-	private EditText ETqq;
-	private EditText ETwechat;
+	 private  Spinner groupSpinner;
+	 private EditText ETphonenum;
+	 private EditText ETemail;
+	 private EditText ETqq;
+	 private EditText ETwechat;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +70,29 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		btn_reset.setOnClickListener(this);
 		
 		ETname=(EditText) findViewById(R.id.name_edit);
-		ETname=(EditText) findViewById(R.id.career_edit);
+		groupSpinner=(Spinner) findViewById(R.id.groupspinner);
 		ETphonenum=(EditText) findViewById(R.id.phone_edit);
 		ETemail=(EditText) findViewById(R.id.email_edit);
 		ETqq=(EditText) findViewById(R.id.qqnum_edit);
 		ETwechat=(EditText) findViewById(R.id.wechatnum_edit);
+		
+		ArrayList<String> group=new ArrayList<String>();
+		group.add("请选择分组");
+		group.add("家人");
+		group.add("朋友");
+		group.add("同学");
+		group.add("同事");
+		group.add("其他");
+		groupSpinner.setAdapter(new ArrayAdapter<String>
+		(this, android.R.layout.simple_list_item_1, group));
+		groupSpinner.setSelection(0, true);
 		
 		
 		
 		provinceSpinner=(Spinner) findViewById(R.id.provinceSpinner);
 		citySpinner=(Spinner) findViewById(R.id.citySpinner);
 		districtSpinner=(Spinner) findViewById(R.id.districtSpinner);
+		
 		myAreaDBHelper=new MyAreaDBHelper(getApplicationContext(), DATABASE_NAME, null, 1);
 		db=myAreaDBHelper.getReadableDatabase();
 		Cursor mCursorP = db.rawQuery("select * from " + TABLE_NAME, null);
@@ -155,6 +169,8 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		citySet = new String[maxPlength][maxClength];
 		districtSet = new String[maxPlength][maxClength][maxDlength];
 	
+		
+		
 		int a = 0, b = 0, c = 0;
 		Cursor mCursor = db.rawQuery("select * from " + TABLE_NAME, null);
 		int provinceIndex = mCursor.getColumnIndex("province_short_name");
@@ -287,7 +303,7 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	citySpinner.setSelection(0, true);
 
 		districtAdapter = new ArrayAdapter<String>(getApplicationContext(),
-				android.R.layout.select_dialog_item, districtSet[0][0]);
+				android.R.layout.simple_spinner_item, districtSet[0][0]);
 		districtSpinner.setAdapter(districtAdapter);  
 	districtSpinner.setSelection(0, true);
 	}
