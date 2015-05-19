@@ -81,7 +81,7 @@ import android.widget.TextView;
         myViewPager.setCurrentItem(1);
         myViewPager.setOnPageChangeListener(new MyPageChangeListener());
     }
-    public class MyPageChangeListener implements OnPageChangeListener {
+    private  class MyPageChangeListener implements OnPageChangeListener {
 
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
@@ -103,7 +103,7 @@ import android.widget.TextView;
     
    
     
-   class myViewPageAdapter extends FragmentPagerAdapter
+ private   class myViewPageAdapter extends FragmentPagerAdapter
     {
 	   private ArrayList<Fragment> mFragmentList;
 	public myViewPageAdapter(FragmentManager fm) {

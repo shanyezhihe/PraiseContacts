@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+   
+    android:orientation="horizontal" >
+    <LinearLayout 
+        android:id="@+id/edit_contact_id"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+         android:layout_gravity="center"
+        android:orientation="vertical">
+        <ImageView 
+          android:layout_width="35dp"
+          android:layout_height="32dp"
+          android:src="@drawable/edit_icon"
+          android:layout_gravity="center"  />
+        <TextView 
+            android:layout_height="15dp"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:text="编辑"
+            
+            android:textSize="12sp"/>
+        
+    </LinearLayout>
+    
+
+</LinearLayout>

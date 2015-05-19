@@ -35,6 +35,10 @@
             android:name=".ActivityBuildContact">
             
         </activity>
+          <activity 
+            android:name=".ActivityEditContact">
+            
+        </activity>
         <activity 
             android:name=".ActivityCheckContact">
             

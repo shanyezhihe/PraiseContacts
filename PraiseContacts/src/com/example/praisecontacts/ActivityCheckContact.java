@@ -2,16 +2,8 @@ package com.example.praisecontacts;
 
 import java.util.ArrayList;
 
-
-
-
-
-
-
-
-
-
-
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,11 +14,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ActivityCheckContact extends FragmentActivity implements OnClickListener {
+	
+	private int COLOR_NAME=0xFF8B2323;
+	
 	private TextView TVdetail;
 	private TextView TVrecord;
+	private TextView checkcontactname;
+	
+	private ImageView IVback;
+	
+	private LinearLayout btn_edit;
 	
 	private int COLOR_BLACK=0xFF000000;
 	private int COLOR_WHITE=0xFF7A7A7A;
@@ -48,8 +50,13 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 		getActionBar().hide();
 		TVdetail=(TextView) findViewById(R.id.detail_id);
 		TVrecord=(TextView) findViewById(R.id.record_id);
+		IVback=(ImageView) findViewById(R.id.checkbackid);
+		checkcontactname=(TextView) findViewById(R.id.check_contact_name);
+		btn_edit=(LinearLayout) findViewById(R.id.edit_contact_id);
+		btn_edit.setOnClickListener(this);
 		TVdetail.setOnClickListener(this);
 		TVrecord.setOnClickListener(this);
+		IVback.setOnClickListener(this);
 		
 		detailFragment=new FramentCheckDetail();
 		recordFragment=new FragmentCheckRecord();
@@ -60,14 +67,38 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 		
 		
 		checkViewPager=(ViewPager) findViewById(R.id.id_check_viewpager);
-		checkViewPager.setCurrentItem(1);
 		checkViewPager.setAdapter(new myViewPageAdapter(getSupportFragmentManager(),checkFragmentList));
+		checkViewPager.setCurrentItem(1);
 		checkViewPager.setOnPageChangeListener(new MyPageChangeListener());
 		
 		
 	}
 	
 	
+	
+	
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode==1&&resultCode==Activity.RESULT_OK)
+		{	
+			Bundle bundle=data.getExtras();
+			String newname=bundle.getString("newname");
+			checkcontactname.setText(newname);
+			checkcontactname.setTextSize(23);
+			checkcontactname.setTextColor(COLOR_NAME);
+			
+		}
+	}
+
+
+
+
+
+
 	private  class MyPageChangeListener  implements OnPageChangeListener 
 	{
 		@Override
@@ -169,7 +200,13 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 			TVrecord.setTextColor(COLOR_BLACK);
 			
 			break;
-	
+		case R.id.checkbackid:
+			ActivityCheckContact.this.finish();
+			break;
+		case R.id.edit_contact_id:
+			Intent editContactIntent=new Intent(ActivityCheckContact.this,ActivityEditContact.class);
+			startActivityForResult(editContactIntent, 1);
+			break;
 		}
 		myFragmentTransaction.commit();
 	}

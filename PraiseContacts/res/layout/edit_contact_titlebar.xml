@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="#aec5e8"
+    android:orientation="horizontal" >
+
+    <RelativeLayout
+        android:id="@+id/btn_cancle"
+        android:layout_marginTop="5dp"
+        android:layout_width="43dp"
+        android:layout_height="30dp"
+        android:background="#aec5e8"
+        android:layout_marginLeft="11dp" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="返回"
+            android:layout_marginLeft="0dp"
+            android:textColor="#000000"
+        	android:textSize="15sp"
+        	android:layout_alignParentRight="true"
+        	android:gravity="center_vertical" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="编辑联系人"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="35dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="11dp"
+        android:gravity="center"
+        android:text="确定"
+        android:background="#4EEE94"
+
+        android:textSize="12sp" />
+
+</RelativeLayout>
