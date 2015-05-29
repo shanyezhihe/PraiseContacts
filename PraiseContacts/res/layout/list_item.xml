@@ -9,13 +9,8 @@
     
     android:orientation="vertical"
         >
-        <View 
-            android:layout_width="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_height="0.5dp"
-            android:background="#8968CD"/>
-        <LinearLayout 
+      
+        <RelativeLayout 
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:layout_marginLeft="5dp"
@@ -33,21 +28,17 @@
                android:textSize="17sp"
                android:textStyle="italic"
                android:text="id"/> 
-               <TextView 
+               <ImageView 
                    android:layout_height="30dp"
                    android:layout_width="30dp"
-                   android:text=">"
-                   android:layout_marginRight="20dp"
+                   android:src="@drawable/new_right"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
                    android:layout_gravity="center"
-                   android:layout_marginLeft="95dp"
+                 
                    />
-        </LinearLayout>
-         <View 
-            android:layout_width="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_height="0.5dp"
-            android:background="#8968CD"/>
+        </RelativeLayout >
+       
     </LinearLayout>
 
 </LinearLayout>

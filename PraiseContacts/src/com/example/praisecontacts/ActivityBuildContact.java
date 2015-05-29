@@ -31,6 +31,9 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	private final String DATABASE_NAME = "area.db";
 	private final String TABLE_NAME = "tb_core_area";
 	
+	private SharedPreferences itemShare;
+	private Editor itemEditor;
+	
 	private SharedPreferences provinceShare;
 	private Editor proviceEditor;
 	
@@ -92,6 +95,9 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buildnewcontact);
 		getActionBar().hide();
+		
+		itemShare=this.getSharedPreferences("ITEMSHARE", 0);
+		itemEditor=itemShare.edit();
 		
 		provinceShare=this.getSharedPreferences("provinceShare", 0);
 		proviceEditor=provinceShare.edit();
@@ -490,7 +496,9 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		}
 		if(v.getId()==R.id.btn_save)
 			
-		{	mcontentValue.put("name", name);
+		{	itemEditor.putString("NEWNAME", name).commit();
+			
+			mcontentValue.put("name", name);
 			groupName=groupSpinner.getSelectedItem().toString();
 			Log.e("groupname", groupName);
 			mcontentValue.put("groupNum", groupName);
@@ -530,6 +538,13 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			groupSpinner.setSelection(0, true);
 		}
 		
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		contactDB.close();
 	}
 	
 	

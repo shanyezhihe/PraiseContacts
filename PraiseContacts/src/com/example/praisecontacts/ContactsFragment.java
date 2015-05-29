@@ -10,6 +10,8 @@ import java.util.Map;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,15 +25,52 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class ContactsFragment extends Fragment implements OnClickListener, OnItemClickListener {
+	
+	private SharedPreferences itemShare;
+	private Editor itemEditor;
+	
 	private LinearLayout TVbuildContact;
 	private LinearLayout TVsearchContact;
 	SharedPreferences positionSharp;
-	Editor edit;
+	private Editor edit;
 	private ListView contactslist;
+	private static final int DATABASE_VERSION = 1;
+	private static final String ContactDATABASE_NAME = "ContactsDB.db";
+	public static final String ContactTABLE_NAME = "ContactsInfoTable";
+	private MyContactsDataBaseHelper mContactHelper;
+	private SQLiteDatabase contactDB;
+	private Cursor cursor;
+	private List<Map<String,String>> contactNameList;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+		
+
+		itemShare=getActivity().getSharedPreferences("ITEMSHARE", 0);
+		itemEditor=itemShare.edit();
+		
+		
+		contactNameList=new ArrayList<Map<String, String>>();
+		contactslist=(ListView) view.findViewById(R.id.contacts_list);
+		mContactHelper=new MyContactsDataBaseHelper(getActivity(), ContactDATABASE_NAME);
+		contactDB=mContactHelper.getReadableDatabase();
+		cursor=contactDB.rawQuery("select * from ContactsInfoTable", null);
+		if(cursor.moveToFirst())
+		{do{
+			String tempname=cursor.getString(cursor.getColumnIndex("name"));
+			Map<String, String> item=new HashMap<String, String>();
+			item.put("name", tempname);
+			contactNameList.add(item);}
+		while
+			(cursor.moveToNext());
+		}
+	
+		SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
+				contactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
+		contactslist.setAdapter(myAdapter);
+		
+		contactslist.setOnItemClickListener(this);
 		
 		 positionSharp=getActivity().getSharedPreferences("SAVEPOSITION", 0);
 		 edit=positionSharp.edit();
@@ -42,25 +81,29 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		TVbuildContact.setOnClickListener(this);
 		TVsearchContact.setOnClickListener(this);
 		
-		contactslist=(ListView) view.findViewById(R.id.contacts_list);
 		
-		
-		
-		List<Map<String,Object>> listItems=new ArrayList<Map<String, Object>>();
-		for(int i=0;i<100;i++)
-		{
-			Map<String, Object> item=new HashMap<String, Object>();
-			item.put("name", "helloworld"+String.valueOf(i));
-			listItems.add(item);
-		}
-		
-		SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
-				listItems, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
-		contactslist.setAdapter(myAdapter);
-		
-		contactslist.setOnItemClickListener(this);
 		return view;
 	}
+	
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(itemShare.getString("NEWNAME", null)!=null)
+		{
+			Map<String, String > m=new HashMap<String, String>();
+			m.put("name", itemShare.getString("NEWNAME", null));
+			contactNameList.add(m);
+			itemEditor.putString("NEWNAME", null).commit();
+			SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
+					contactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
+			contactslist.setAdapter(myAdapter);
+			
+		}
+	}
+
+
 	@Override
 	public void onClick(View v) {
 		int btn_id=v.getId();
