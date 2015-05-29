@@ -33,13 +33,14 @@
                android:textSize="17sp"
                android:textStyle="italic"
                android:text="id"/> 
-               <ImageView 
+               <TextView 
                    android:layout_height="30dp"
                    android:layout_width="30dp"
+                   android:text=">"
                    android:layout_marginRight="20dp"
                    android:layout_gravity="center"
                    android:layout_marginLeft="95dp"
-                   android:src="@drawable/go_icon"/>
+                   />
         </LinearLayout>
          <View 
             android:layout_width="match_parent"

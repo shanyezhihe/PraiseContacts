@@ -176,7 +176,7 @@ public class WeartherFrament extends Fragment {
 				0);
 		lastRequestLHL = saveRequestLHL.getString("LHLlastrequestdate", null);
 		if (day1.equals(lastRequestLHL))
-			haveRequestLHL = true;
+			haveRequestLHL = false;
 		else
 			haveRequestLHL = false;
 		

@@ -15,7 +15,8 @@ public class FramentCheckDetail extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		return super.onCreateView(inflater, container, savedInstanceState);
+		View view =inflater.inflate(R.layout.check_detail, container,false);
+		return view;
 	} 
 	
 	

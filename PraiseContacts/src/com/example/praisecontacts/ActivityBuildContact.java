@@ -5,29 +5,49 @@ package com.example.praisecontacts;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ActivityBuildContact extends Activity implements OnClickListener {
 	private final String DATABASE_NAME = "area.db";
 	private final String TABLE_NAME = "tb_core_area";
+	
+	private SharedPreferences provinceShare;
+	private Editor proviceEditor;
+	
+	private SharedPreferences cityShare;
+	private Editor cityEditor;
+	
+	private static final int DATABASE_VERSION = 1;
+	private static final String ContactDATABASE_NAME = "ContactsDB.db";
+	public static final String ContactTABLE_NAME = "ContactsInfoTable";
 	private Spinner provinceSpinner;
 	private Spinner citySpinner;
 	private Spinner districtSpinner;
 	private MyAreaDBHelper myAreaDBHelper;
 	private SQLiteDatabase db;
+	
+	private MyContactsDataBaseHelper mContactHelper;
+	private SQLiteDatabase contactDB;
 	private String TAG="tag";
 	private String[] provinceSet;
 	private String[][] citySet;
@@ -45,8 +65,8 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	private int realCityLenth;
 	
 	private RelativeLayout btn_back;
-	private Button btn_save;
-	private TextView btn_reset;
+	private TextView btn_save;
+	private Button btn_reset;
 	
 	private EditText ETname;
 	 private  Spinner groupSpinner;
@@ -54,6 +74,18 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	 private EditText ETemail;
 	 private EditText ETqq;
 	 private EditText ETwechat;
+	 
+	 private String name;
+	 private String groupName;
+	 private String PhoneNum;
+	 private String EmailNum;
+	 private String QQNum;
+	 private String WeChatNum;
+	 private String provinceName;
+	 private String cityName;
+	 private String distrcName;
+	private ArrayList<String> group;
+	 private ContentValues mcontentValue;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +93,18 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		setContentView(R.layout.buildnewcontact);
 		getActionBar().hide();
 		
+		provinceShare=this.getSharedPreferences("provinceShare", 0);
+		proviceEditor=provinceShare.edit();
+		cityShare=this.getSharedPreferences("cityShare", 0);
+		cityEditor=cityShare.edit();
+		
+		mcontentValue=new ContentValues();
+		mContactHelper=new MyContactsDataBaseHelper(this, ContactDATABASE_NAME);
+		contactDB=mContactHelper.getReadableDatabase();
+		
 		btn_back=(RelativeLayout) findViewById(R.id.btn_back);
-		btn_save =(Button) findViewById(R.id.btn_save);
-		btn_reset=(TextView) findViewById(R.id.btn_reset);
+		btn_save =(TextView) findViewById(R.id.btn_save);
+		btn_reset=(Button) findViewById(R.id.btn_reset);
 		
 		btn_back.setOnClickListener(this);
 		btn_save.setOnClickListener(this);
@@ -76,7 +117,7 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		ETqq=(EditText) findViewById(R.id.qqnum_edit);
 		ETwechat=(EditText) findViewById(R.id.wechatnum_edit);
 		
-		ArrayList<String> group=new ArrayList<String>();
+		 group=new ArrayList<String>();
 		group.add("请选择分组");
 		group.add("家人");
 		group.add("朋友");
@@ -92,6 +133,124 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		provinceSpinner=(Spinner) findViewById(R.id.provinceSpinner);
 		citySpinner=(Spinner) findViewById(R.id.citySpinner);
 		districtSpinner=(Spinner) findViewById(R.id.districtSpinner);
+		
+		ETname.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				name=ETname.getText().toString();
+				
+			}
+		});
+		
+		ETemail.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				EmailNum=ETemail.getText().toString();
+			
+			}
+		});
+		
+		
+		ETphonenum.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				PhoneNum=ETphonenum.getText().toString();
+			
+			}
+		});
+		
+		ETqq.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				QQNum=ETqq.getText().toString();
+				
+			}
+		});
+		
+		ETwechat.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				WeChatNum=ETwechat.getText().toString();
+			
+			}
+		});
+		
+	
 		
 		myAreaDBHelper=new MyAreaDBHelper(getApplicationContext(), DATABASE_NAME, null, 1);
 		db=myAreaDBHelper.getReadableDatabase();
@@ -308,6 +467,20 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	districtSpinner.setSelection(0, true);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -316,19 +489,45 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			ActivityBuildContact.this.finish();
 		}
 		if(v.getId()==R.id.btn_save)
-		{
-			//ActivityBuildContact.this.finish();
+			
+		{	mcontentValue.put("name", name);
+			groupName=groupSpinner.getSelectedItem().toString();
+			Log.e("groupname", groupName);
+			mcontentValue.put("groupNum", groupName);
+			mcontentValue.put("phoneNum", PhoneNum);
+			mcontentValue.put("EmailNum", EmailNum);
+			mcontentValue.put("QQNum", QQNum);
+			mcontentValue.put("WeChatNum", WeChatNum);
+			provinceName=provinceSpinner.getSelectedItem().toString();
+			Log.e("groupname", provinceName);
+			mcontentValue.put("provice", provinceName);
+			cityName=citySpinner.getSelectedItem().toString();
+			mcontentValue.put("city",cityName);
+			distrcName=districtSpinner.getSelectedItem().toString();
+			mcontentValue.put("distr",distrcName);
+			mcontentValue.put("Type", "build");
+			if(PhoneNum==null)
+			{
+				Toast.makeText(this, "手机号码不能为空", Toast.LENGTH_SHORT).show();
+			}
+			else
+			{
+				contactDB.insert(ContactTABLE_NAME, null, mcontentValue);
+				
+			}
+			
 		}
 		if(v.getId()==R.id.btn_reset)
 		{	
-//			ETname.setText("");
-//			ETcareer.setText("");
-//			ETphonenum.setText("");
-//			ETemail.setText("");
-//			ETqq.setText("");
-//			ETwechat.setText("");
-			// provinceSpinner.setSelection(2,true);
-			
+			ETname.setText("");
+			ETphonenum.setText("");
+			ETemail.setText("");
+			ETqq.setText("");
+			ETwechat.setText("");
+			 provinceSpinner.setSelection(0,true);
+			citySpinner.setSelection(0, true);
+			districtSpinner.setSelection(0, true);
+			groupSpinner.setSelection(0, true);
 		}
 		
 	}

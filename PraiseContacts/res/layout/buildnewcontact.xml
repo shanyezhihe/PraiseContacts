@@ -275,13 +275,14 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"/>
     <TextView 
-        android:id="@+id/btn_reset"
-        android:layout_width="100dp"
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:text="保存"
-        android:background="@drawable/shape_white"
+        android:textColor="@drawable/selector_submit_text_color"
+        android:background="@drawable/selector_submit_text_bg"
         android:textSize="17sp"/>
     
   </LinearLayout> 

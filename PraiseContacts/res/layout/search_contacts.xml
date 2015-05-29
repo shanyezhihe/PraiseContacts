@@ -7,5 +7,43 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       layout="@layout/searchtitlebar"/>  
-
+      
+	
+  <RelativeLayout 
+      android:layout_width="match_parent"
+      android:layout_height="45dp">
+   
+     <TextView 
+         android:id="@+id/btn_search"
+         android:layout_width="100dp"
+         android:layout_height="44dp"
+         android:layout_alignParentRight="true"
+         android:text="赞一下"
+        android:textSize="17sp"
+        android:background="@drawable/selector_submit_text_bg"
+         android:textColor="@drawable/selector_submit_text_color"
+         android:gravity="center"/>
+     <View 
+         android:layout_height="45dp"
+         android:layout_width="5dp"
+         android:background="#dddddd"
+         android:layout_toLeftOf="@id/btn_search"
+         />
+      <AutoCompleteTextView
+  		android:id="@+id/id_autocomplete"
+  		android:layout_height="45dp"
+  		android:layout_width="match_parent"
+  		android:background="@null"
+  		android:layout_toLeftOf="@id/btn_search"
+  		android:drawableLeft="@drawable/icon_search_com"
+        />  
+  </RelativeLayout>
+  <View 
+      android:layout_height="0.5dp"
+      android:layout_width="match_parent"
+      android:background="#dddddd"/>
+  <ListView 
+      android:id="@+id/seach_list"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 </LinearLayout>

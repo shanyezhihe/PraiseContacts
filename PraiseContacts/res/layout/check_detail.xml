@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <View 
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#0A0A0A"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal">
+        
+        <ImageView 
+            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/call_icon"/>
+       <TextView 
+           android:id="@+id/id_phonenum"
+           android:layout_height="50dp"
+           
+           android:layout_width="wrap_content"
+           android:text="13800138000"
+           android:layout_gravity="center"
+           android:gravity="center"
+           /> 
+        
+         <ImageView 
+           
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:layout_marginLeft="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/msm_icon"/>
+    </LinearLayout>
+ <View 
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#0A0A0A"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+</LinearLayout>

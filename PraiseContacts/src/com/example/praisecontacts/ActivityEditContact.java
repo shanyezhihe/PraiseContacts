@@ -11,6 +11,7 @@ public class ActivityEditContact extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_contact);
 		getActionBar().hide();
+		
 	}
 	
 }
