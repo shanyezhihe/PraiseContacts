@@ -496,11 +496,24 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		}
 		if(v.getId()==R.id.btn_save)
 			
-		{	itemEditor.putString("NEWNAME", name).commit();
-			
+		{	if(name==null)
+		{
+			itemEditor.putString("NEWNAME", "未知联系人");
+			mcontentValue.put("name", "未知联系人");
+		}
+		else
+		{
+			itemEditor.putString("NEWNAME", name);
 			mcontentValue.put("name", name);
+		}
+			
 			groupName=groupSpinner.getSelectedItem().toString();
+			if(groupName.equals("请选择分组"))
+			{
+				groupName="其他";
+			}
 			Log.e("groupname", groupName);
+			itemEditor.putString("NEWGROUPNAME", groupName).commit();
 			mcontentValue.put("groupNum", groupName);
 			mcontentValue.put("phoneNum", PhoneNum);
 			mcontentValue.put("EmailNum", EmailNum);
@@ -513,7 +526,7 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			mcontentValue.put("city",cityName);
 			distrcName=districtSpinner.getSelectedItem().toString();
 			mcontentValue.put("distr",distrcName);
-			mcontentValue.put("Type", "build");
+			mcontentValue.put("Type", "2");
 			if(PhoneNum==null)
 			{
 				Toast.makeText(this, "手机号码不能为空", Toast.LENGTH_SHORT).show();
@@ -521,7 +534,7 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			else
 			{
 				contactDB.insert(ContactTABLE_NAME, null, mcontentValue);
-				
+				Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
 			}
 			
 		}

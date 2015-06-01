@@ -170,22 +170,46 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	}
 	
 	
-//	@Override
-//	public void onResume() {
-//		// TODO Auto-generated method stub
-//		super.onResume();
-//		if(itemShare.getString("NEWNAME", null)!=null)
-//		{
-//			Map<String, String > m=new HashMap<String, String>();
-//			m.put("name", itemShare.getString("NEWNAME", null));
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if(itemShare.getString("NEWNAME", null)!=null)
+		{
+			Map<String, String > item=new HashMap<String, String>();
+			item.put("name", itemShare.getString("NEWNAME", null));
+			if(itemShare.getString("NEWGROUPNAME", null).equals("家人"))
+				familycontactNameList.add(item);
+			if(itemShare.getString("NEWGROUPNAME", null).equals("朋友"))
+				friendcontactNameList.add(item);
+			if(itemShare.getString("NEWGROUPNAME", null).equals("同学"))
+				classcontactNameList.add(item);
+			if(itemShare.getString("NEWGROUPNAME", null).equals("同事"))
+				colleaguecontactNameList.add(item);
+			if(itemShare.getString("NEWGROUPNAME", null).equals("其他"))
+				othercontactNameList.add(item);
 //			phonecontactNameList.add(m);
-//			itemEditor.putString("NEWNAME", null).commit();
+		itemEditor.putString("NEWNAME", null);
+		itemEditor.putString("NEWGROUPNAME", null).commit();
+		phonecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		familycontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				familycontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		friendcontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				friendcontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		classcontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				classcontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		colleaguecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				colleaguecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		othercontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				othercontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		
 //			SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
 //					phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
 //			phonecontactslist.setAdapter(myAdapter);
-//			
-//		}
-//	}
+			
+		}
+	}
 
 
 	@Override
