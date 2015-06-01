@@ -211,7 +211,6 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		}
 	}
 
-
 	@Override
 	public void onClick(View v) {
 		int btn_id=v.getId();

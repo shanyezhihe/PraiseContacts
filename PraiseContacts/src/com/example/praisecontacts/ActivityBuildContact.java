@@ -506,7 +506,6 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			itemEditor.putString("NEWNAME", name);
 			mcontentValue.put("name", name);
 		}
-			
 			groupName=groupSpinner.getSelectedItem().toString();
 			if(groupName.equals("ÇëÑ¡Ôñ·Ö×é"))
 			{
