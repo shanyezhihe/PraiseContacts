@@ -2,12 +2,240 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    <ListView
-        android:id="@+id/contacts_list"
-      android:layout_width="match_parent"
+    <LinearLayout 
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#D3D3D3"
+        android:orientation="vertical">
+        <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="手机通讯录"
+               android:gravity="center_vertical"
+               android:layout_marginLeft="5dp"
+               android:layout_centerVertical="true"
+               android:textSize="18sp"
+               android:textColor="#333333"/>
+           <ImageView 
+               android:layout_alignParentRight="true"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:id="@+id/btn_showphonecontact"
+               android:layout_width="wrap_content"
+               android:layout_marginRight="12dp"
+               android:src="@drawable/icon_show"
+               /> 
+        </RelativeLayout>
+        <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <ListView
+        android:id="@+id/phonecontacts_list"
+      android:layout_width="match_parent"
+     android:dividerHeight="1px" 
+        android:layout_height="wrap_content"
+        android:background="#f8f8f8"
      />
+       <TextView 
+           android:layout_height="20dp"
+           android:layout_width="match_parent"
+           android:text="赞.通讯录"
+           android:gravity="center_vertical"
+           android:textColor="#cccccc"
+           android:layout_marginLeft="5dp"/>  
+            <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="我的家人"
+               android:gravity="center_vertical"
+               android:layout_marginLeft="5dp"
+               android:layout_centerVertical="true"
+               android:textSize="18sp"
+               android:textColor="#333333"/>
+           <ImageView 
+               android:layout_alignParentRight="true"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:id="@+id/btn_showfamilycontact"
+               android:layout_width="wrap_content"
+               android:layout_marginRight="12dp"
+               android:src="@drawable/icon_show"
+               /> 
+        </RelativeLayout>
+        
+         <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <ListView
+        android:id="@+id/familycontacts_list"
+      android:layout_width="match_parent"
+     android:dividerHeight="1px" 
+        android:layout_height="wrap_content"
+        android:background="#f8f8f8"
+     />
+         
+         
+         
+         
+         <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="我的好友"
+               android:gravity="center_vertical"
+               android:layout_marginLeft="5dp"
+               android:layout_centerVertical="true"
+               android:textSize="18sp"
+               android:textColor="#333333"/>
+           <ImageView 
+               android:layout_alignParentRight="true"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:id="@+id/btn_showfriendcontact"
+               android:layout_width="wrap_content"
+               android:layout_marginRight="12dp"
+               android:src="@drawable/icon_show"
+               /> 
+        </RelativeLayout>
+        
+         <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <ListView
+        android:id="@+id/friendcontacts_list"
+      android:layout_width="match_parent"
+     android:dividerHeight="1px" 
+        android:layout_height="wrap_content"
+        android:background="#f8f8f8"
+     />
+         
+         
+         
+            <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="我的同学"
+               android:gravity="center_vertical"
+               android:layout_marginLeft="5dp"
+               android:layout_centerVertical="true"
+               android:textSize="18sp"
+               android:textColor="#333333"/>
+           <ImageView 
+               android:layout_alignParentRight="true"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:id="@+id/btn_showclasscontact"
+               android:layout_width="wrap_content"
+               android:layout_marginRight="12dp"
+               android:src="@drawable/icon_show"
+               /> 
+        </RelativeLayout>
+        
+         <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <ListView
+        android:id="@+id/classcontacts_list"
+      android:layout_width="match_parent"
+     android:dividerHeight="1px" 
+        android:layout_height="wrap_content"
+        android:background="#f8f8f8"
+     />
+         
+         
+         <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="我的同事"
+               android:gravity="center_vertical"
+               android:layout_marginLeft="5dp"
+               android:layout_centerVertical="true"
+               android:textSize="18sp"
+               android:textColor="#333333"/>
+           <ImageView 
+               android:layout_alignParentRight="true"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:id="@+id/btn_showcolleaguecontact"
+               android:layout_width="wrap_content"
+               android:layout_marginRight="12dp"
+               android:src="@drawable/icon_show"
+               /> 
+        </RelativeLayout>
+        
+         <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <ListView
+        android:id="@+id/colleaguecontacts_list"
+      android:layout_width="match_parent"
+     android:dividerHeight="1px" 
+        android:layout_height="wrap_content"
+        android:background="#f8f8f8"
+     />
+         
+         
+         <RelativeLayout 
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+           <TextView 
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:text="其他"
+               android:gravity="center_vertical"
+               android:layout_marginLeft="5dp"
+               android:layout_centerVertical="true"
+               android:textSize="18sp"
+               android:textColor="#333333"/>
+           <ImageView 
+               android:layout_alignParentRight="true"
+               android:layout_height="wrap_content"
+               android:layout_centerVertical="true"
+               android:id="@+id/btn_showothercontact"
+               android:layout_width="wrap_content"
+               android:layout_marginRight="12dp"
+               android:src="@drawable/icon_show"
+               /> 
+        </RelativeLayout>
+        
+         <View 
+            android:layout_height="0.5dp"
+            android:layout_width="match_parent"
+            android:background="#dddddd"/>
+         <ListView
+        android:id="@+id/othercontacts_list"
+      android:layout_width="match_parent"
+     android:dividerHeight="1px" 
+        android:layout_height="wrap_content"
+        android:background="#f8f8f8"
+     />
+         
+         
+         
+    </LinearLayout>
+  
     
 	<include
 	    android:layout_height="50dp"

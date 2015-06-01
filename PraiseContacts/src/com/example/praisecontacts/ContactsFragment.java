@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
+import android.R.raw;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -20,6 +23,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -33,14 +37,39 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	private LinearLayout TVsearchContact;
 	SharedPreferences positionSharp;
 	private Editor edit;
-	private ListView contactslist;
+	private ListView phonecontactslist;
+	private ListView familycontactslist;
+	private ListView friendcontactslist;
+	private ListView classcontactslist;
+	private ListView colleaguecontactslist;
+	private ListView othercontactslist;
+	
+	private ImageView phonecontactshow;
+	private ImageView familycontactshow;
+	private ImageView friendcontactshow;
+	private ImageView classcontactshow;
+	private ImageView colleaguecontactshow;
+	private ImageView othercontactshow;
+	
+	private boolean isshowphone=false;
+	private boolean isshowfamily=false;
+	private boolean isshowfriend=false;
+	private boolean isshowclass=false;
+	private boolean isshowcolleague=false;
+	private boolean isshowother=false;
+	
 	private static final int DATABASE_VERSION = 1;
 	private static final String ContactDATABASE_NAME = "ContactsDB.db";
 	public static final String ContactTABLE_NAME = "ContactsInfoTable";
 	private MyContactsDataBaseHelper mContactHelper;
 	private SQLiteDatabase contactDB;
 	private Cursor cursor;
-	private List<Map<String,String>> contactNameList;
+	private List<Map<String,String>> phonecontactNameList;
+	private List<Map<String,String>> familycontactNameList;
+	private List<Map<String,String>> friendcontactNameList;
+	private List<Map<String,String>> classcontactNameList;
+	private List<Map<String,String>> colleaguecontactNameList;
+	private List<Map<String,String>> othercontactNameList;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -51,26 +80,81 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		itemEditor=itemShare.edit();
 		
 		
-		contactNameList=new ArrayList<Map<String, String>>();
-		contactslist=(ListView) view.findViewById(R.id.contacts_list);
+		phonecontactNameList=new ArrayList<Map<String, String>>();
+		familycontactNameList=new ArrayList<Map<String, String>>();
+		friendcontactNameList=new ArrayList<Map<String, String>>();
+		classcontactNameList=new ArrayList<Map<String, String>>();
+		colleaguecontactNameList=new ArrayList<Map<String, String>>();
+		othercontactNameList=new ArrayList<Map<String, String>>();
+		
+		phonecontactslist=(ListView) view.findViewById(R.id.phonecontacts_list);
+		phonecontactslist.setVisibility(View.GONE);
+		familycontactslist=(ListView) view.findViewById(R.id.familycontacts_list);
+		familycontactslist.setVisibility(View.GONE);
+		friendcontactslist=(ListView) view.findViewById(R.id.friendcontacts_list);
+		friendcontactslist.setVisibility(View.GONE);
+		classcontactslist=(ListView) view.findViewById(R.id.classcontacts_list);
+		classcontactslist.setVisibility(View.GONE);
+		colleaguecontactslist=(ListView) view.findViewById(R.id.colleaguecontacts_list);
+		colleaguecontactslist.setVisibility(View.GONE);
+		othercontactslist=(ListView) view.findViewById(R.id.othercontacts_list);
+		othercontactslist.setVisibility(View.GONE);
+		
+		phonecontactshow=(ImageView) view.findViewById(R.id.btn_showphonecontact);
+		phonecontactshow.setOnClickListener(this);
+		familycontactshow=(ImageView) view.findViewById(R.id.btn_showfamilycontact);
+		familycontactshow.setOnClickListener(this);
+		friendcontactshow=(ImageView) view.findViewById(R.id.btn_showfriendcontact);
+		friendcontactshow.setOnClickListener(this);
+		classcontactshow=(ImageView) view.findViewById(R.id.btn_showclasscontact);
+		classcontactshow.setOnClickListener(this);
+		colleaguecontactshow=(ImageView) view.findViewById(R.id.btn_showcolleaguecontact);
+		colleaguecontactshow.setOnClickListener(this);
+		othercontactshow=(ImageView) view.findViewById(R.id.btn_showothercontact);
+		othercontactshow.setOnClickListener(this);
+		
+		
 		mContactHelper=new MyContactsDataBaseHelper(getActivity(), ContactDATABASE_NAME);
 		contactDB=mContactHelper.getReadableDatabase();
 		cursor=contactDB.rawQuery("select * from ContactsInfoTable", null);
 		if(cursor.moveToFirst())
 		{do{
 			String tempname=cursor.getString(cursor.getColumnIndex("name"));
+			String tempgroupname=cursor.getString(cursor.getColumnIndex("groupNum"));
+			String tempType=cursor.getString(cursor.getColumnIndex("Type"));
 			Map<String, String> item=new HashMap<String, String>();
 			item.put("name", tempname);
-			contactNameList.add(item);}
+			if(tempType=="1")
+			phonecontactNameList.add(item);
+			if(tempgroupname.equals("家人"))
+				familycontactNameList.add(item);
+			if(tempgroupname.equals("朋友"))
+				friendcontactNameList.add(item);
+			if(tempgroupname.equals("同学"))
+				classcontactNameList.add(item);
+			if(tempgroupname.equals("同事"))
+				colleaguecontactNameList.add(item);
+			if(tempgroupname.equals("其他"))
+				othercontactNameList.add(item);
+		}
 		while
 			(cursor.moveToNext());
 		}
 	
-		SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
-				contactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
-		contactslist.setAdapter(myAdapter);
+		phonecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		familycontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				familycontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		friendcontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				friendcontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		classcontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				classcontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		colleaguecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				colleaguecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		othercontactslist.setAdapter(new SimpleAdapter(getActivity(),
+				othercontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
 		
-		contactslist.setOnItemClickListener(this);
+		//phonecontactslist.setOnItemClickListener(this);
 		
 		 positionSharp=getActivity().getSharedPreferences("SAVEPOSITION", 0);
 		 edit=positionSharp.edit();
@@ -86,22 +170,22 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 	}
 	
 	
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		if(itemShare.getString("NEWNAME", null)!=null)
-		{
-			Map<String, String > m=new HashMap<String, String>();
-			m.put("name", itemShare.getString("NEWNAME", null));
-			contactNameList.add(m);
-			itemEditor.putString("NEWNAME", null).commit();
-			SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
-					contactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
-			contactslist.setAdapter(myAdapter);
-			
-		}
-	}
+//	@Override
+//	public void onResume() {
+//		// TODO Auto-generated method stub
+//		super.onResume();
+//		if(itemShare.getString("NEWNAME", null)!=null)
+//		{
+//			Map<String, String > m=new HashMap<String, String>();
+//			m.put("name", itemShare.getString("NEWNAME", null));
+//			phonecontactNameList.add(m);
+//			itemEditor.putString("NEWNAME", null).commit();
+//			SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
+//					phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
+//			phonecontactslist.setAdapter(myAdapter);
+//			
+//		}
+//	}
 
 
 	@Override
@@ -116,16 +200,111 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			Intent searchIntent=new Intent(getActivity(),ActivitySearchContact.class);
 			startActivity(searchIntent);
 			break;
+		case R.id.btn_showphonecontact:
+			if (!isshowphone) {
+				phonecontactshow
+						.setImageResource(R.drawable.common_hide_list);
+				isshowphone = true;
+				phonecontactslist.setVisibility(View.VISIBLE);
+			} else {
+				phonecontactshow
+						.setImageResource(R.drawable.common_show_list);
+				isshowphone  = false;
+
+				phonecontactslist.setVisibility(View.GONE);
+			}
+			break;
+		case R.id.btn_showfamilycontact:
+			if (!isshowfamily) {
+				familycontactshow
+						.setImageResource(R.drawable.common_hide_list);
+				isshowfamily = true;
+				familycontactslist.setVisibility(View.VISIBLE);
+			} else {
+				familycontactshow
+						.setImageResource(R.drawable.common_show_list);
+				isshowfamily  = false;
+
+				familycontactslist.setVisibility(View.GONE);
+			}
+			break;
+		case R.id.btn_showfriendcontact:
+			if (!isshowfriend) {
+				friendcontactshow
+						.setImageResource(R.drawable.common_hide_list);
+				isshowfriend = true;
+				friendcontactslist.setVisibility(View.VISIBLE);
+			} else {
+				friendcontactshow
+						.setImageResource(R.drawable.common_show_list);
+				isshowfriend  = false;
+
+				friendcontactslist.setVisibility(View.GONE);
+			}
+			break;
+		case R.id.btn_showclasscontact:
+			if (!isshowclass) {
+				classcontactshow
+						.setImageResource(R.drawable.common_hide_list);
+				isshowclass = true;
+				classcontactslist.setVisibility(View.VISIBLE);
+			} else {
+				classcontactshow
+						.setImageResource(R.drawable.common_show_list);
+				isshowclass  = false;
+
+				classcontactslist.setVisibility(View.GONE);
+			}
+			break;
+		case R.id.btn_showcolleaguecontact:
+			if (!isshowcolleague) {
+				colleaguecontactshow
+						.setImageResource(R.drawable.common_hide_list);
+				isshowcolleague = true;
+				colleaguecontactslist.setVisibility(View.VISIBLE);
+			} else {
+				colleaguecontactshow
+						.setImageResource(R.drawable.common_show_list);
+				isshowcolleague  = false;
+
+				colleaguecontactslist.setVisibility(View.GONE);
+			}
+			
+			break;
+		case R.id.btn_showothercontact:
+			
+			if (!isshowother) {
+				othercontactshow
+						.setImageResource(R.drawable.common_hide_list);
+				isshowother = true;
+				othercontactslist.setVisibility(View.VISIBLE);
+			} else {
+				othercontactshow
+						.setImageResource(R.drawable.common_show_list);
+				isshowother  = false;
+
+				othercontactslist.setVisibility(View.GONE);
+			}
+			
+			break;
 		}
 		
 	}
+//	@Override
+//	public void onItemClick(AdapterView<?> parent, View view, int position,
+//			long id) {
+//		 edit.putInt("POSITION", position);
+//		 edit.commit();
+//		 Intent checkIntent=new Intent(getActivity(),ActivityCheckContact.class);
+//		 startActivity(checkIntent);
+//		
+//	}
+
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		 edit.putInt("POSITION", position);
-		 edit.commit();
-		 Intent checkIntent=new Intent(getActivity(),ActivityCheckContact.class);
-		 startActivity(checkIntent);
+		// TODO Auto-generated method stub
 		
 	}
 	
