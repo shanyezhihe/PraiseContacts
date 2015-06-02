@@ -33,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:text="新建联系人"
-        android:textColor="#2cb8e5"
+        android:textColor="#333333"
         android:textSize="18sp" />
 
     <Button

@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 
+
 import android.R.raw;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,16 +28,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
-public class ContactsFragment extends Fragment implements OnClickListener, OnItemClickListener {
+public class ContactsFragment extends Fragment implements OnClickListener{
 	
 	private SharedPreferences itemShare;
 	private Editor itemEditor;
 	
 	private LinearLayout TVbuildContact;
 	private LinearLayout TVsearchContact;
-	SharedPreferences positionSharp;
-	private Editor edit;
+	SharedPreferences detailShare;
+	private Editor detailedit;
 	private ListView phonecontactslist;
 	private ListView familycontactslist;
 	private ListView friendcontactslist;
@@ -75,7 +77,8 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 		
-
+		 detailShare=getActivity().getSharedPreferences("SAVEDETAIL", 0);
+		 detailedit=detailShare.edit();
 		itemShare=getActivity().getSharedPreferences("ITEMSHARE", 0);
 		itemEditor=itemShare.edit();
 		
@@ -154,10 +157,81 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		othercontactslist.setAdapter(new SimpleAdapter(getActivity(),
 				othercontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
 		
-		//phonecontactslist.setOnItemClickListener(this);
 		
-		 positionSharp=getActivity().getSharedPreferences("SAVEPOSITION", 0);
-		 edit=positionSharp.edit();
+		phonecontactslist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
+				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
+				startActivity(checkItent);
+			}
+		});
+		
+		familycontactslist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
+				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
+				startActivity(checkItent);
+			}
+		});
+		
+		friendcontactslist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
+				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
+				startActivity(checkItent);
+			}
+		});
+		
+		classcontactslist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
+				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
+				startActivity(checkItent);
+			}
+		});
+		
+		colleaguecontactslist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
+				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
+				startActivity(checkItent);
+			}
+		});
+		
+		othercontactslist.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
+				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
+				startActivity(checkItent);
+			}
+		});
+		
+		
+		
 		
 		TVbuildContact=(LinearLayout) view.findViewById(R.id.build_contacts);
 		TVsearchContact=(LinearLayout) view.findViewById(R.id.search_contacts);
@@ -204,13 +278,10 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		othercontactslist.setAdapter(new SimpleAdapter(getActivity(),
 				othercontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
 		
-//			SimpleAdapter  myAdapter=new SimpleAdapter(getActivity(),
-//					phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} );
-//			phonecontactslist.setAdapter(myAdapter);
+
 			
 		}
 	}
-
 	@Override
 	public void onClick(View v) {
 		int btn_id=v.getId();
@@ -313,22 +384,9 @@ public class ContactsFragment extends Fragment implements OnClickListener, OnIte
 		}
 		
 	}
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View view, int position,
-//			long id) {
-//		 edit.putInt("POSITION", position);
-//		 edit.commit();
-//		 Intent checkIntent=new Intent(getActivity(),ActivityCheckContact.class);
-//		 startActivity(checkIntent);
-//		
-//	}
 
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
+	
 	
 }

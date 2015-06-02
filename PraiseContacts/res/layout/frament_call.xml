@@ -31,9 +31,11 @@
             android:layout_width="60dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/send_btn_normal"
-            android:text="发送"/>
+            android:background="@drawable/selector_submit_text_bg"
+            android:text="发送"
+            android:textColor="@drawable/selector_submit_text_color"/>
         <EditText 
             android:id="@+id/id_input_msg"
             android:layout_width="fill_parent"

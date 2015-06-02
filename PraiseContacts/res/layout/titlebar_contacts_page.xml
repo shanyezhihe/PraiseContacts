@@ -12,7 +12,7 @@
      android:layout_weight="1"
      android:gravity="center"
      android:text="聊天"
-     android:textColor="#FFFFFF"/> 
+     android:textColor="#000000"/> 
      <TextView 
      android:id="@+id/contacts"
      android:layout_width="0dp"
@@ -20,7 +20,7 @@
      android:layout_weight="1"
      android:gravity="center"
      android:text="联系人"
-     android:textColor="#000000"/> 
+     android:textColor="#FFFFFF"/> 
      <TextView 
      android:id="@+id/wearther"
      android:layout_width="0dp"
@@ -28,6 +28,6 @@
      android:layout_weight="1"
      android:gravity="center"
      android:text="天气"
-     android:textColor="#7A7A7A"/> 
+     android:textColor="#000000"/> 
 
 </LinearLayout>

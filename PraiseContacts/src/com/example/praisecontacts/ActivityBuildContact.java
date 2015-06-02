@@ -37,6 +37,9 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	private SharedPreferences provinceShare;
 	private Editor proviceEditor;
 	
+	private SharedPreferences countShare;
+	private Editor countEditor;
+	
 	private SharedPreferences cityShare;
 	private Editor cityEditor;
 	
@@ -95,6 +98,10 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buildnewcontact);
 		getActionBar().hide();
+		
+		countShare=this.getSharedPreferences("COUNTSHARE", 0);
+		countEditor=countShare.edit();
+		//countEditor.putInt("COUNT", 1).commit();
 		
 		itemShare=this.getSharedPreferences("ITEMSHARE", 0);
 		itemEditor=itemShare.edit();
@@ -490,6 +497,7 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		int i=countShare.getInt("COUNT", 1);
 		if(v.getId()==R.id.btn_back)
 		{
 			ActivityBuildContact.this.finish();
@@ -498,8 +506,10 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			
 		{	if(name==null)
 		{
-			itemEditor.putString("NEWNAME", "未知联系人");
-			mcontentValue.put("name", "未知联系人");
+			
+			itemEditor.putString("NEWNAME", "未知联系人"+i);
+			mcontentValue.put("name", "未知联系人"+i);
+			
 		}
 		else
 		{
@@ -507,10 +517,7 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			mcontentValue.put("name", name);
 		}
 			groupName=groupSpinner.getSelectedItem().toString();
-			if(groupName.equals("请选择分组"))
-			{
-				groupName="其他";
-			}
+			
 			Log.e("groupname", groupName);
 			itemEditor.putString("NEWGROUPNAME", groupName).commit();
 			mcontentValue.put("groupNum", groupName);
@@ -529,11 +536,17 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			if(PhoneNum==null)
 			{
 				Toast.makeText(this, "手机号码不能为空", Toast.LENGTH_SHORT).show();
+				
+			}
+			else if(groupName.equals("请选择分组"))
+			{
+				Toast.makeText(this, "请选择分组", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
 				contactDB.insert(ContactTABLE_NAME, null, mcontentValue);
 				Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
+				countEditor.putInt("COUNT", i+1).commit();
 			}
 			
 		}

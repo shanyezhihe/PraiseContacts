@@ -20,7 +20,7 @@
         android:orientation="horizontal">
         
         <ImageView 
-             android:id="@+id/id_iv"
+              android:id="@+id/call_phone"
             android:layout_height="50dp"
             android:layout_width="48dp"
             android:layout_centerVertical="true"
@@ -29,17 +29,17 @@
        <TextView 
            android:id="@+id/id_phonenum"
            android:layout_height="50dp"
-           android:layout_toRightOf="@id/id_iv"
+           android:layout_toRightOf="@id/call_phone"
            android:layout_width="match_parent"
            android:layout_marginRight="55dp"
            android:text="13800138000"
            android:layout_centerInParent="true"
-         
+           android:textSize="16sp"
            android:gravity="center"
            /> 
         
          <ImageView 
-          
+          android:id="@+id/send_sms"
             android:layout_height="50dp"
             android:layout_width="50dp"
             android:layout_alignParentRight="true"
@@ -78,7 +78,7 @@
          android:layout_width="100dp"
          android:layout_height="45dp"
          android:text="QQ号码"
-         android:textSize="17sp"
+         android:textSize="14sp"
          android:layout_marginLeft="5dp"
          android:gravity="center"
          android:textColor="#333333"
@@ -91,7 +91,7 @@
            android:layout_alignParentRight="true"
            android:layout_marginRight="5dp"
            android:textColor="#333333"
-           android:textSize="17sp"
+           android:textSize="14sp"
            android:gravity="center"
            android:text="173466505"
            />
@@ -107,7 +107,7 @@
          android:layout_width="100dp"
          android:layout_height="45dp"
          android:text="微信号码"
-         android:textSize="17sp"
+         android:textSize="14sp"
          android:layout_marginLeft="5dp"
          android:gravity="center"
          android:textColor="#333333"
@@ -130,7 +130,7 @@
            android:layout_height="44dp"
          
            android:textColor="#333333"
-           android:textSize="17sp"
+           android:textSize="14sp"
            android:gravity="center"
            android:text="173466505"
            />
@@ -152,7 +152,7 @@
           android:id="@+id/email_lable"
           android:layout_width="100dp"
           android:layout_height="45dp"
-          android:textSize="17sp"
+          android:textSize="14sp"
           android:layout_marginLeft="5dp"
           android:textColor="#333333"
           android:gravity="center"
@@ -184,7 +184,7 @@
           android:layout_alignParentRight="true"
           android:gravity="center"
           android:text="13610337335@163.com"
-          android:textSize="17sp"
+          android:textSize="14sp"
           android:textColor="#333333"
           /> 
           <View 
@@ -211,7 +211,7 @@
           android:id="@+id/add_lable"
           android:layout_width="100dp"
           android:layout_height="45dp"
-          android:textSize="17sp"
+          android:textSize="14sp"
           android:layout_marginLeft="5dp"
           android:textColor="#333333"
           android:gravity="center"
@@ -243,7 +243,7 @@
           android:layout_alignParentRight="true"
           android:gravity="center"
           android:text="广东广州番禺"
-          android:textSize="17sp"
+          android:textSize="14sp"
           android:textColor="#333333"
           /> 
           <View 
