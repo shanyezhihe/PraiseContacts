@@ -66,20 +66,13 @@ public class WeartherFrament extends Fragment {
 	
 	public char centigrade = 176;
 	
-	// 获取经纬度
-	private LocationManager locationManager;
-	private double longitude = 0.0;
-	private double latitude = 0.0;
-	//心知天气
-	private String HOST = "https://api.thinkpage.cn/v2/weather/all.json?";
+	
+
 	private URL weatherURL;
 	private String Key = "XSI7AKYYBY";
 	private RequestQueue mQueue;
 	
-	//老黄历接口
-	private String lhlHOST = "http://zone.icloudoor.com/icloudoor-web";
-	private URL lhlURL;
-	private int lhlCode;
+	
 	private String sid;
 	
 	private String day1;
@@ -127,13 +120,9 @@ public class WeartherFrament extends Fragment {
 		Day1Bg = (TextView) view.findViewById(R.id.weather_day_now_color);
 		Day2Bg = (TextView) view.findViewById(R.id.weather_day_after_color);
 		Day3Bg = (TextView) view.findViewById(R.id.weather_day_after_after_color);
-		YiContent = (TextView) view.findViewById(R.id.weather_content_yi);
-		JiContent = (TextView) view.findViewById(R.id.weather_content_ji);
-		YiContent.setSelected(true);
-		JiContent.setSelected(true);
 		
-	    if(YiContent.getLineCount() == 2) YiContent.setHeight(72);
-	    if(YiContent.getLineCount() == 1) YiContent.setHeight(36);
+		
+	  
 		
 		WeatherIcon = (ImageView) view.findViewById(R.id.weather_icon);
 		
@@ -149,20 +138,7 @@ public class WeartherFrament extends Fragment {
 		Day2Bg.setOnClickListener(myClick);
 		Day3Bg.setOnClickListener(myClick);
 		
-		// To get the longitude and latitude -- 经度，纬度
-		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			getLocation();
-		} else {
-			toggleGPS();
-			new Handler() {
-			}.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					getLocation();
-				}
-			}, 2000);
-		}
+	
 				
 		// INIT -- 获取当前日期
 		Date date = new Date();// 取时间
@@ -238,101 +214,10 @@ public class WeartherFrament extends Fragment {
 		mQueue = Volley.newRequestQueue(getActivity());
 		sid = loadSid();	
 		
-		try {
-			if(latitude != 0.0 || longitude != 0.0){        // can get the location in time
-				SharedPreferences saveLocation = getActivity().getSharedPreferences("LOCATION", 0);
-				Editor editor = saveLocation.edit();
-				editor.putString("Latitude", String.valueOf(latitude));
-				editor.putString("Longitude", String.valueOf(longitude));
-				editor.commit();
-				
-				weatherURL = new URL(HOST + "city=" + String.valueOf(latitude) + ":" + String.valueOf(longitude) + "&language=zh-chs&unit=c&aqi=city&key=" + Key);
-			} else{ 
-				SharedPreferences loadLocation = getActivity().getSharedPreferences("LOCATION", 0);         // if we can't get the location in time, use the location for the last usage
-				latitude = Double.parseDouble(loadLocation.getString("Latitude", "0.0"));
-				longitude = Double.parseDouble(loadLocation.getString("Longitude", "0.0"));
-		
-				weatherURL = new URL(HOST + "city=" + String.valueOf(latitude) + ":" + String.valueOf(longitude) + "&language=zh-chs&unit=c&aqi=city&key=" + Key);
-				if(longitude == 0.0 && latitude == 0.0)      // if no location for the last usage, then use the ip address to get the weather info for better user experiences
-					weatherURL = new URL(HOST + "city=ip" + "&language=zh-chs&unit=c&aqi=city&key=" + Key);
-			}
-			
-			lhlURL = new URL(lhlHOST + "/user/data/laohuangli/get.do" + "?sid=" + sid);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		
-		MyJsonObjectRequest mLhlRequest = new MyJsonObjectRequest(
-				Method.POST, lhlURL.toString(), null,
-				new Response.Listener<JSONObject>() {
-
-					@Override
-					public void onResponse(JSONObject response) {
-						try {
-							if (response.getString("sid") != null) {
-								sid = response.getString("sid");
-								saveSid(sid);
-							}
-							lhlCode = response.getInt("code");
-							if(lhlCode == 1){
-								JSONArray data = response.getJSONArray("data");
-								JSONObject Day1 = (JSONObject) data.get(0);
-								JSONObject Day2 = (JSONObject) data.get(1);
-								JSONObject Day3 = (JSONObject) data.get(2);
-								
-								SharedPreferences savedLHL = getActivity().getSharedPreferences("SAVEDLHL",
-										0);
-								Editor editor = savedLHL.edit();
-								editor.putString("D1YI", Day1.getString("yi"));
-								editor.putString("D1JI", Day1.getString("ji"));
-								editor.putString("D2YI", Day2.getString("yi"));
-								editor.putString("D2JI", Day2.getString("ji"));
-								editor.putString("D3YI", Day3.getString("yi"));
-								editor.putString("D3JI", Day3.getString("ji"));
-								editor.commit();
-								
-								YiContent.setText(Day1.getString("yi"));
-								JiContent.setText(Day1.getString("ji"));
-								
-								SharedPreferences saveRequestLHL = getActivity().getSharedPreferences("LHLREQUESTDATE",
-										0);
-								Editor editor1 = saveRequestLHL.edit();
-								editor1.putString("LHLlastrequestdate", day1);
-								editor1.commit();
-							} 
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-						Log.e("TEST", response.toString());
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-		
-					}
-				}){
-			@Override
-			protected Map<String, String> getParams()
-					throws AuthFailureError {
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("date", day1);
-				map.put("days", "3");
-				return map;
-			}
-		};
-		if(!haveRequestLHL){
-			mQueue.add(mLhlRequest);
-		}else{
-			SharedPreferences loadLHL = getActivity().getSharedPreferences("SAVEDLHL",
-					0);
-			YiContent.setText(loadLHL.getString("D1YI", null));
-			JiContent.setText(loadLHL.getString("D1JI", null));
-		}
 		
 		
 		JsonObjectRequest mWeatherRequest = new JsonObjectRequest(
-				Method.GET, weatherURL.toString(), null,
+				Method.GET,"https://api.thinkpage.cn/v2/weather/all.json?city=广州&language=zh-chs&unit=c&aqi=city&key="+ Key, null,
 				new Response.Listener<JSONObject>() {
 
 					@Override
@@ -392,7 +277,7 @@ public class WeartherFrament extends Fragment {
 			SharedPreferences loadWeather = getActivity().getSharedPreferences("SAVEDWEATHER",
 					0);
 			
-			City.setText(loadWeather.getString("City", null));
+			City.setText("广州");
 			Temp.setText(loadWeather.getString("Day1Temp", null) + String.valueOf(centigrade));		
 			WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day1IconIndex", "0"))]);
 		}
@@ -427,8 +312,6 @@ public class WeartherFrament extends Fragment {
 				
 				WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day1IconIndex", "0"))]);
 				
-				YiContent.setText(loadLHL.getString("D1YI", null));
-				JiContent.setText(loadLHL.getString("D1JI", null));
 				
 				break;
 			case R.id.weather_day_after_color:
@@ -495,8 +378,6 @@ public class WeartherFrament extends Fragment {
 				
 				WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day2IconIndexDay", "0"))]);
 				
-				YiContent.setText(loadLHL.getString("D2YI", null));
-				JiContent.setText(loadLHL.getString("D2JI", null));
 				
 				break;
 			case R.id.weather_day_after_after_color:
@@ -560,10 +441,7 @@ public class WeartherFrament extends Fragment {
 				Temp.setText(loadWeather.getString("Day3TempHigh", null) + String.valueOf(centigrade));
 				
 				WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day3IconIndexDay", "0"))]);
-				
-				YiContent.setText(loadLHL.getString("D3YI", null));
-				JiContent.setText(loadLHL.getString("D3JI", null));
-				
+			
 				break;
 			default:
 				break;
@@ -572,71 +450,7 @@ public class WeartherFrament extends Fragment {
 		
 	}
 	
-	private void toggleGPS() {
-		Intent gpsIntent = new Intent();
-		gpsIntent.setClassName("com.android.settings",
-				"com.android.settings.widget.SettingsAppWidgetProvider");
-		gpsIntent.addCategory("android.intent.category.ALTERNATIVE");
-		gpsIntent.setData(Uri.parse("custom:3"));
-		try {
-			PendingIntent.getBroadcast(getActivity(), 0, gpsIntent, 0).send();
-		} catch (CanceledException e) {
-			e.printStackTrace();
-			locationManager
-					.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-							1000, 0, locationListener);
-			Location location1 = locationManager
-					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			if (location1 != null) {
-				latitude = location1.getLatitude(); // 经度
-				longitude = location1.getLongitude(); // 纬度
-			}
-		}
-	}
-
-	private void getLocation() {
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (location != null) {
-			latitude = location.getLatitude();
-			longitude = location.getLongitude();
-		} else {
-
-			locationManager.requestLocationUpdates(
-					LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
-		}
-	}
-
-	LocationListener locationListener = new LocationListener() {
-		// Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-		@Override
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-		}
-
-		// Provider被enable时触发此函数，比如GPS被打开
-		@Override
-		public void onProviderEnabled(String provider) {
-			
-		}
-
-		// Provider被disable时触发此函数，比如GPS被关闭
-		@Override
-		public void onProviderDisabled(String provider) {
-			
-		}
-
-		// 当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-		@Override
-		public void onLocationChanged(Location location) {
-			if (location != null) {
-				Log.e("Map",
-						"Location changed : Lat: " + location.getLatitude()
-								+ " Lng: " + location.getLongitude());
-				latitude = location.getLatitude(); // 经度
-				longitude = location.getLongitude(); // 纬度
-			}
-		}
-	};
+	
 
 	public String getWeek(int i){
 		String week = null;
