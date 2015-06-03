@@ -10,6 +10,8 @@ import java.util.Map;
 
 
 
+
+
 import android.R.raw;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -72,6 +74,9 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 	private List<Map<String,String>> classcontactNameList;
 	private List<Map<String,String>> colleaguecontactNameList;
 	private List<Map<String,String>> othercontactNameList;
+	
+	TextView name_text;
+	int i;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -223,10 +228,11 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				TextView name_text=(TextView) view.findViewById(R.id.id_name);
+				 name_text=(TextView) view.findViewById(R.id.id_name);
 				detailedit.putString("DETAILNAME", name_text.getText().toString()).commit();
 				Intent checkItent=new Intent(getActivity(),ActivityCheckContact.class);
 				startActivity(checkItent);
+				i=1;
 			}
 		});
 		
@@ -243,28 +249,50 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		return view;
 	}
 	
-	
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		contactDB.close();
+	}
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if(itemShare.getString("NEWNAME", null)!=null)
-		{
-			Map<String, String > item=new HashMap<String, String>();
-			item.put("name", itemShare.getString("NEWNAME", null));
-			if(itemShare.getString("NEWGROUPNAME", null).equals("家人"))
+		int i=1;
+		phonecontactNameList=new ArrayList<Map<String, String>>();
+		familycontactNameList=new ArrayList<Map<String, String>>();
+		friendcontactNameList=new ArrayList<Map<String, String>>();
+		classcontactNameList=new ArrayList<Map<String, String>>();
+		colleaguecontactNameList=new ArrayList<Map<String, String>>();
+		othercontactNameList=new ArrayList<Map<String, String>>();
+		mContactHelper=new MyContactsDataBaseHelper(getActivity(), ContactDATABASE_NAME);
+		contactDB=mContactHelper.getReadableDatabase();
+		cursor=contactDB.rawQuery("select * from ContactsInfoTable", null);
+		if(cursor.moveToFirst())
+		{do{
+			String tempname=cursor.getString(cursor.getColumnIndex("name"));
+			String tempgroupname=cursor.getString(cursor.getColumnIndex("groupNum"));
+			String tempType=cursor.getString(cursor.getColumnIndex("Type"));
+			Map<String, String> item=new HashMap<String, String>();
+			item.put("name", tempname);
+			if(tempType=="1")
+			phonecontactNameList.add(item);
+			if(tempgroupname.equals("家人"))
 				familycontactNameList.add(item);
-			if(itemShare.getString("NEWGROUPNAME", null).equals("朋友"))
+			if(tempgroupname.equals("朋友"))
 				friendcontactNameList.add(item);
-			if(itemShare.getString("NEWGROUPNAME", null).equals("同学"))
+			if(tempgroupname.equals("同学"))
 				classcontactNameList.add(item);
-			if(itemShare.getString("NEWGROUPNAME", null).equals("同事"))
+			if(tempgroupname.equals("同事"))
 				colleaguecontactNameList.add(item);
-			if(itemShare.getString("NEWGROUPNAME", null).equals("其他"))
+			if(tempgroupname.equals("其他"))
 				othercontactNameList.add(item);
-//			phonecontactNameList.add(m);
-		itemEditor.putString("NEWNAME", null);
-		itemEditor.putString("NEWGROUPNAME", null).commit();
+		}
+		while
+			(cursor.moveToNext());
+		}
+	
 		phonecontactslist.setAdapter(new SimpleAdapter(getActivity(),
 				phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
 		familycontactslist.setAdapter(new SimpleAdapter(getActivity(),
@@ -278,10 +306,51 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		othercontactslist.setAdapter(new SimpleAdapter(getActivity(),
 				othercontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
 		
+//		if(i==1)
+//		{
+//			name_text.setText(detailShare.getString("DETAILNAME", null));
+//			i=0;
+//		}
+		
+		
+//		if(itemShare.getString("NEWNAME", null)!=null)
+//		{
+//			Map<String, String > item=new HashMap<String, String>();
+//			item.put("name", itemShare.getString("NEWNAME", null));
+//			if(itemShare.getString("NEWGROUPNAME", null).equals("家人"))
+//				familycontactNameList.add(item);
+//			if(itemShare.getString("NEWGROUPNAME", null).equals("朋友"))
+//				friendcontactNameList.add(item);
+//			if(itemShare.getString("NEWGROUPNAME", null).equals("同学"))
+//				classcontactNameList.add(item);
+//			if(itemShare.getString("NEWGROUPNAME", null).equals("同事"))
+//				colleaguecontactNameList.add(item);
+//			if(itemShare.getString("NEWGROUPNAME", null).equals("其他"))
+//				othercontactNameList.add(item);
+////			phonecontactNameList.add(m);
+//		itemEditor.putString("NEWNAME", null);
+//		itemEditor.putString("NEWGROUPNAME", null).commit();
+//		phonecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+//				phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+//		familycontactslist.setAdapter(new SimpleAdapter(getActivity(),
+//				familycontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+//		friendcontactslist.setAdapter(new SimpleAdapter(getActivity(),
+//				friendcontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+//		classcontactslist.setAdapter(new SimpleAdapter(getActivity(),
+//				classcontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+//		colleaguecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+//				colleaguecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+//		othercontactslist.setAdapter(new SimpleAdapter(getActivity(),
+//				othercontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+		
 
 			
-		}
+	//	}
 	}
+	
+	
+	
+	
 	@Override
 	public void onClick(View v) {
 		int btn_id=v.getId();
@@ -385,7 +454,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		
 	}
 
-	
+
 	
 	
 	

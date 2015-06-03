@@ -2,12 +2,12 @@ package com.example.praisecontacts;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -34,12 +34,19 @@ public class ActivityEditContact extends Activity {
 	public static final String ContactTABLE_NAME = "ContactsInfoTable";
 	private MyContactsDataBaseHelper mContactHelper;
 	private SQLiteDatabase contactDB;
+	
+	private SharedPreferences countShare;
+	private Editor countEditor;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_contact);
 		getActionBar().hide();
+
+		countShare=this.getSharedPreferences("COUNTSHARE", 0);
+		countEditor=countShare.edit();
 		btn_save=(TextView) findViewById(R.id.btn_ok);
 		btn_back=(RelativeLayout) findViewById(R.id.btn_cancle);
 		btn_delete=(TextView) findViewById(R.id.btn_delete);
@@ -86,6 +93,14 @@ public class ActivityEditContact extends Activity {
 				// TODO Auto-generated method stub
 				
 				String name=namechange.getText().toString();
+				if(name.equals(""))
+				{
+					name="未知联系人"+countShare.getInt("COUNT", 0);
+				}
+				detailedit.putString("DETAILNAME", name).commit();
+				Intent intent=new Intent();
+				intent.putExtra("newname", name);
+				setResult(1, intent);
 				String phone=phonechange.getText().toString();
 				String email=emailchange.getText().toString();
 				String qq=qqchange.getText().toString();
@@ -99,7 +114,7 @@ public class ActivityEditContact extends Activity {
 				contactDB.updateWithOnConflict(ContactTABLE_NAME, mcontentValue, 
 						"name=?", new String[]{oldName}, 
 						SQLiteDatabase.CONFLICT_REPLACE);
-
+				
 				finish();
 			}
 		});
@@ -110,8 +125,16 @@ public class ActivityEditContact extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				contactDB.delete(ContactTABLE_NAME, "name=?", new String[]{oldName});
+				Intent intent =new Intent("finish");
+				sendBroadcast(intent);
+				finish();
 			}
 		});
 	}
-	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		contactDB.close();
+	}
 }

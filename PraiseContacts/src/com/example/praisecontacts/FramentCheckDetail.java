@@ -57,34 +57,33 @@ public class FramentCheckDetail extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(TVphone.getText().toString()!=null)
-				{
-					
-					 Intent phoneIntent = new Intent(
-							 "android.intent.action.CALL", Uri.parse("tel:"
-							 + TVphone.getText().toString())); 
+				if (TVphone.getText().toString() != null) {
 
-							  // Æô¶¯ 
+					Intent phoneIntent = new Intent(
+							"android.intent.action.CALL", Uri.parse("tel:"
+									+ TVphone.getText().toString()));
 
-							 startActivity(phoneIntent);
+					// Æô¶¯
+
+					startActivity(phoneIntent);
 				}
 			}
 		});
-		
+
 		btn_sms.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				new MyDialog(getActivity(),R.style.add_dialog , null, new OnCustomDialogListener() {
-					
-					@Override
-					public void back(int haveset) {
-						// TODO Auto-generated method stub
-						
-					}
-				}).show();
-		}
+				new MyDialog(getActivity(), R.style.add_dialog, null,
+						new OnCustomDialogListener() {
+
+							@Override
+							public void back(int haveset) {
+								// TODO Auto-generated method stub
+							}
+						}).show();
+			}
 		});
 		
 		

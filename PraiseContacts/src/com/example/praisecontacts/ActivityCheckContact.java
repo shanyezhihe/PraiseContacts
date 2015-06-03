@@ -3,7 +3,10 @@ package com.example.praisecontacts;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -45,12 +49,17 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 	private FragmentTransaction myFragmentTransaction;
 	
 	private ArrayList<Fragment> checkFragmentList;
+	
+	private MyBroadcastReceiver mreceiver;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.check_contact);
 		getActionBar().hide();
+		IntentFilter intentfilter=new IntentFilter("finish");
+		mreceiver=new MyBroadcastReceiver();
+		registerReceiver(mreceiver, intentfilter);
 		 detailShare=this.getSharedPreferences("SAVEDETAIL", 0);
 		TVdetail=(TextView) findViewById(R.id.detail_id);
 		TVrecord=(TextView) findViewById(R.id.record_id);
@@ -84,25 +93,27 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 	}
 	
 	
-	
-	
-	
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode==1&&resultCode==Activity.RESULT_OK)
-		{	
-			Bundle bundle=data.getExtras();
-			String newname=bundle.getString("newname");
+		if (requestCode == 1 && resultCode == 1) {
+			setResult(1, data);
+			Log.e("dsafjlk", "dsafj;lsdk");
+			Bundle bundle = data.getExtras();
+			String newname = bundle.getString("newname");
 			checkcontactname.setText(newname);
 			checkcontactname.setTextSize(23);
 			checkcontactname.setTextColor(COLOR_NAME);
-			
+			TVnicheng
+					.setText(detailShare.getString("DETAILNAME", null)
+							.substring(
+									detailShare.getString("DETAILNAME", null)
+											.length() - 1,
+									detailShare.getString("DETAILNAME", null)
+											.length()));
 		}
 	}
-
 
 
 
@@ -149,41 +160,42 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	private   class myViewPageAdapter extends FragmentPagerAdapter
-    {
-	   private ArrayList<Fragment> mFragmentList;
-	public myViewPageAdapter(FragmentManager fm) {
-		super(fm);
-		// TODO Auto-generated constructor stub
+	private class myViewPageAdapter extends FragmentPagerAdapter {
+		private ArrayList<Fragment> mFragmentList;
+
+		public myViewPageAdapter(FragmentManager fm) {
+			super(fm);
+			// TODO Auto-generated constructor stub
+		}
+
+		public myViewPageAdapter(FragmentManager fm,
+				ArrayList<Fragment> fragments) {
+			super(fm);
+			this.mFragmentList = fragments;
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		public Fragment getItem(int arg0) {
+			// TODO Auto-generated method stub
+			return mFragmentList.get(arg0);
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			return mFragmentList.size();
+		}
+
 	}
-	public myViewPageAdapter(FragmentManager fm,ArrayList<Fragment> fragments) {
-		super(fm);
-		this.mFragmentList=fragments;
-		// TODO Auto-generated constructor stub
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		unregisterReceiver(mreceiver);
 	}
 
-	@Override
-	public Fragment getItem(int arg0) {
-		// TODO Auto-generated method stub
-		return mFragmentList.get(arg0);
-	}
-
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return mFragmentList.size();
-	}
-    	
-		
-    	
-    }
-	
 	@Override
 	public void onClick(View v) {
 		
@@ -220,6 +232,14 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 		myFragmentTransaction.commit();
 	}
 
-	
+	class MyBroadcastReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			finish();
+		}
+
+	}
 		
 }
