@@ -3,6 +3,12 @@ package com.example.praisecontacts;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,11 +17,13 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
  public class ContactMainActivity extends FragmentActivity implements OnClickListener {
@@ -31,7 +39,7 @@ import android.widget.TextView;
 	private TextView TVweather;
 	private LinearLayout contacttitle;
 	
-	
+	private  SharedPreferences phoneNumShare;
 	
 	private int COLOR_GRAY = 0xFF000000;
 	private int COLOR_GREEN = 0xFFFFFFFF;
@@ -39,11 +47,26 @@ import android.widget.TextView;
 	private int COLOR_YELLO=0XFFFFD39B;
 	private int COLOR_QING=0XFF76EEC6;
 	private int COLOR_BLACK=0xFF000000;
+	
+	  private MyServiceReceiver mReceiver01;
+      private MyServiceReceiver mReceiver02;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts_main);
         getActionBar().hide();
+        
+        phoneNumShare = this.getSharedPreferences("phoneNumShare",0);
+        
+        IntentFilter mFilter01;  
+        mFilter01 = new IntentFilter("SMS_SEND_ACTIOIN");  
+        mReceiver01 = new MyServiceReceiver();  
+        registerReceiver(mReceiver01, mFilter01);  
+          
+        /* 自定义IntentFilter为DELIVERED_SMS_ACTION Receiver */  
+        mFilter01 = new IntentFilter("SMS_DELIVERED_ACTION");  
+        mReceiver02 = new MyServiceReceiver();  
+        registerReceiver(mReceiver02, mFilter01);  
         
         contacttitle=(LinearLayout) findViewById(R.id.contacttitle);
         
@@ -218,4 +241,59 @@ import android.widget.TextView;
 	
 		myFragmentTransaction.commit();
 	}
+
+
+   private class MyServiceReceiver extends BroadcastReceiver {  
+ 	  @Override  
+ 	  public void onReceive(Context context, Intent intent) {  
+ 	    // TODO Auto-generated method stub  
+ 	   try {  
+ 	    /* android.content.BroadcastReceiver.getResultCode()方法 */  
+ 	    switch (getResultCode()) {  
+ 	    case Activity.RESULT_OK:  
+ 	     /* 发送短信成功 */  
+ 	    	String str=phoneNumShare.getString("PHONENUM", null)+"已成功接收信息";
+ 	    Toast.makeText(ContactMainActivity.this, str, Toast.LENGTH_SHORT).show();
+ 	     Log.d("lmn", 
+ 	        "----发送短信成功---------------------------");  
+ 	     break;  
+ 	    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:  
+ 	     /* 发送短信失败 */  
+ 	    case SmsManager.RESULT_ERROR_RADIO_OFF:  
+ 	    case SmsManager.RESULT_ERROR_NULL_PDU:  
+ 	    default: 
+ 	    	String ss=phoneNumShare.getString("PHONENUM", null)+"接收信息失败！";
+ 	    	 Toast.makeText(ContactMainActivity.this, ss, Toast.LENGTH_SHORT).show();
+ 	     Log.d("lmn", 
+ 	        "----发送短信失败---------------------------");  
+ 	     break;  
+ 	    }  
+ 	   } catch (Exception e) {  
+ 	    e.getStackTrace();  
+ 	   }  
+ 	  }  
+ 	 }  
+   
+@Override
+protected void onResume() {
+	// TODO Auto-generated method stub
+	super.onResume();
+	
+	
+}
+
+
+@Override
+protected void onDestroy() {
+	// TODO Auto-generated method stub
+	super.onDestroy();
+	if (mReceiver01 != null && mReceiver02 != null) {  
+	    unregisterReceiver(mReceiver01);  
+	    unregisterReceiver(mReceiver02);  
+	}  
+}
+   
+   
+
+   
 }

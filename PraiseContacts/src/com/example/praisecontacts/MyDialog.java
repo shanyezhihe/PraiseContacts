@@ -1,17 +1,23 @@
 package com.example.praisecontacts;
 
 
+import java.util.List;
+
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MyDialog extends Dialog {
         public interface OnCustomDialogListener{
@@ -19,10 +25,16 @@ public class MyDialog extends Dialog {
         }
         
         private String name;
+        
+        private EditText phoneNumEdit;
         private OnCustomDialogListener customDialogListener;
-       private EditText pswEditText;
+       private EditText smsEditText;
         private TextView cancle,bound;
       private  Context context;
+      private String phoneNum;
+      
+    
+      
         public MyDialog(Context context,int theme,String name,OnCustomDialogListener customDialogListener) {
                 super(context,theme);
                 this.name = name;
@@ -35,7 +47,13 @@ public class MyDialog extends Dialog {
         protected void onCreate(Bundle savedInstanceState) { 
                 super.onCreate(savedInstanceState);
                 setContentView(R.layout.forget_gesture_dialog);
-                pswEditText=(EditText) findViewById(R.id.content_send);
+                
+               
+                SharedPreferences phoneNumShare = context.getSharedPreferences("phoneNumShare",0);
+        		 phoneNum=phoneNumShare.getString("PHONENUM", null);
+                smsEditText=(EditText) findViewById(R.id.content_send);
+                phoneNumEdit=(EditText) findViewById(R.id.to_phonenum);
+                phoneNumEdit.setText(phoneNum);
                  cancle=(TextView) findViewById(R.id.cancle);
                  bound=(TextView) findViewById(R.id.bound);
                  bound.setOnClickListener(clickListener);
@@ -43,8 +61,8 @@ public class MyDialog extends Dialog {
                  bound.setTextColor(0x7FFFFFFF);
                  bound.setEnabled(false);
                  cancle.setTextColor(0xff000000);
-                 pswEditText.addTextChangedListener(new TextWatcher() {
-					
+                 smsEditText.addTextChangedListener(new TextWatcher() {
+                	
 					@Override
 					public void onTextChanged(CharSequence s, int start, int before, int count) {
 						// TODO Auto-generated method stub
@@ -60,7 +78,7 @@ public class MyDialog extends Dialog {
 					
 					@Override
 					public void afterTextChanged(Editable s) {
-						if(pswEditText.getText().toString().length() > 7){
+						if(smsEditText.getText().toString().length() > 0){
 							bound.setTextColor(0xFFFFFFFF);
 							bound.setEnabled(true);
 						} else {
@@ -73,32 +91,34 @@ public class MyDialog extends Dialog {
              
                      }
         
+        
+      
+        
+        
         private View.OnClickListener clickListener = new View.OnClickListener() {
                 
                 @Override
                 public void onClick(View v) {
                 	if(v.getId()==R.id.bound)
-                	{	SharedPreferences loginStatus = context.getSharedPreferences("LOGINSTATUS",0);
-                		String oldPsw=loginStatus.getString("PASSWARD", null);
-                		if(pswEditText.getText().toString().equals(oldPsw))
-                		{	Intent broadcastIntent=new Intent("KillConfirmActivity");
-                			MyDialog.this.context.sendBroadcast(broadcastIntent);
+                	{	   SmsManager smsManager = SmsManager.getDefault();
+                	
+                		if(smsEditText.getText().toString().length()>70)
+                		{	
                 			
-                			Intent verifybroadcastIntent=new Intent("KillVerifyActivity");
-                		 	MyDialog.this.context.sendBroadcast(verifybroadcastIntent);
-                		 	
-                			customDialogListener.back(0);
-                			MyDialog.this.dismiss();
-                		}
+                			   List<String> contents = smsManager.divideMessage(smsEditText.getText().toString());
+                               for(String sms : contents) {
+                                   smsManager.sendTextMessage(phoneNum, null, sms, null, null);
+                               }
+                           }
                 		else
                 		{
-                			Toast.makeText(context, "mima ", Toast.LENGTH_SHORT).show();
-                			pswEditText.setText("");
-                		}
+                            smsManager.sendTextMessage(phoneNum, null, phoneNum, null, null);
+                        }
+                		MyDialog.this.dismiss();
                 	}
                 	else if(v.getId()==R.id.cancle)
                 	{
-                		pswEditText.setText("");
+                		smsEditText.setText("");
                 		MyDialog.this.dismiss();
                 	}
                 }

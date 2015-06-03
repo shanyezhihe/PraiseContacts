@@ -59,6 +59,7 @@ public class FramentCheckDetail extends Fragment {
 				// TODO Auto-generated method stub
 				if(TVphone.getText().toString()!=null)
 				{
+					
 					 Intent phoneIntent = new Intent(
 							 "android.intent.action.CALL", Uri.parse("tel:"
 							 + TVphone.getText().toString())); 
@@ -102,7 +103,9 @@ public class FramentCheckDetail extends Fragment {
 			TVemail.setText(cursor.getString(3));
 			TVaddress.setText(cursor.getString(6)+cursor.getString(7)+cursor.getString(8));
 		}
-		
+		SharedPreferences phoneNumShare = getActivity().getSharedPreferences("phoneNumShare",0);
+		Editor phoneNumEditor=phoneNumShare.edit();
+		phoneNumEditor.putString("PHONENUM",TVphone.getText().toString()).commit();
 		return view;
 	} 
 	
