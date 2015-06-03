@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -25,6 +26,8 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 	private TextView TVdetail;
 	private TextView TVrecord;
 	private TextView checkcontactname;
+	private TextView TVnicheng;
+	
 	
 	private ImageView IVback;
 	
@@ -37,7 +40,7 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 	
 	private Fragment detailFragment;
 	private Fragment recordFragment;
-	
+	private SharedPreferences detailShare;
 	private FragmentManager myFragmentManager;
 	private FragmentTransaction myFragmentTransaction;
 	
@@ -48,10 +51,16 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.check_contact);
 		getActionBar().hide();
+		 detailShare=this.getSharedPreferences("SAVEDETAIL", 0);
 		TVdetail=(TextView) findViewById(R.id.detail_id);
 		TVrecord=(TextView) findViewById(R.id.record_id);
 		IVback=(ImageView) findViewById(R.id.checkbackid);
 		checkcontactname=(TextView) findViewById(R.id.check_contact_name);
+		checkcontactname.setText(detailShare.getString("DETAILNAME", null));
+		TVnicheng=(TextView) findViewById(R.id.nichen);
+		TVnicheng.setText(detailShare.getString("DETAILNAME", null).
+				substring(detailShare.getString("DETAILNAME", null).length()-1,
+						detailShare.getString("DETAILNAME", null).length()));
 		btn_edit=(LinearLayout) findViewById(R.id.edit_contact_id);
 		btn_edit.setOnClickListener(this);
 		TVdetail.setOnClickListener(this);

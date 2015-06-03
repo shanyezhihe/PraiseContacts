@@ -37,17 +37,17 @@
         android:text="编辑联系人"
         android:textSize="18sp" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_ok"
-        android:layout_width="35dp"
-        android:layout_height="25dp"
+        android:layout_width="39dp"
+        android:layout_height="28dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="11dp"
         android:gravity="center"
-        android:text="确定"
-        android:background="#4EEE94"
-
-        android:textSize="12sp" />
+        android:text="保存"
+        android:textColor="@drawable/selector_submit_text_color"
+		android:background="@drawable/selector_submit_text_bg"
+        android:textSize="14sp" />
 
 </RelativeLayout>

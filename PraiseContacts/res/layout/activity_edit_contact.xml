@@ -8,9 +8,204 @@
     android:layout_height="40dp"
     android:layout_width="match_parent"
     layout="@layout/edit_contact_titlebar"/>
-   <ImageView 
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       />
+   
+  <LinearLayout 
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginBottom="0dp"
+      android:layout_marginLeft="7dp"
+      android:layout_marginRight="7dp"
+      android:orientation="vertical"
+      >
+      <LinearLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="80dp"
+          android:orientation="horizontal">
+          <ImageView 
+              android:layout_height="match_parent"
+              android:layout_width="100dp"
+              android:layout_weight="2"
+              android:src="@drawable/people_icon"
+              android:layout_gravity="center"
+              />
+          <View 
+              android:layout_width="10dp"
+              android:layout_height="match_parent"/>
+          <LinearLayout 
+              android:layout_height="45dp"
+              android:layout_width="300dp"
+              android:layout_weight="4"
+              android:layout_gravity="center_vertical"
+              android:orientation="vertical"
+              android:background="@drawable/shape_white">
+              <EditText 
+                  android:id="@+id/name_change"
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp"
+                  android:hint=" 姓名"
+                  android:textColorHint="#ffffff"
+                  android:inputType="textPersonName"
+                   android:layout_gravity="center_vertical"
+                  android:drawableLeft="@drawable/button_205"
+                  
+                   android:background="@null"/>
+            
+          		
+		         
+          </LinearLayout>
+      </LinearLayout>
+       <View 
+      android:layout_height="20dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/login_phone"
+            />
+        
+          <EditText
+            android:id="@+id/phone_change"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入手机号"
+            android:inputType="phone"
+            
+            android:textColor="#000000"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+    
+     <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/email_icon"
+            />
+        
+          <EditText
+            android:id="@+id/email_change"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入邮件地址"
+            android:inputType="textEmailAddress"
+            android:textColor="#000000"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+      <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/qqicon"
+            />
+        
+          <EditText
+            android:id="@+id/qqnum_change"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入QQ号码"
+            android:inputType="number"
+            android:textColor="#000000"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+    
+     <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        
+        android:background="@drawable/shape_white"
+        >
+        
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+           android:layout_gravity="center"
+           android:src="@drawable/wechat_icon"
+            />
+        
+          <EditText
+            android:id="@+id/wechatnum_change"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+			android:background="@null"
+			
+            android:hint="  请输入微信号"
+            
+            android:textColor="#000000"
+            android:textColorHint="#ffffff"
+            android:textSize="16sp" />
+        
+    </LinearLayout>
+    
+      <View 
+      android:layout_height="15dp"
+      android:layout_width="match_parent"
+      />
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+    <TextView 
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="删除联系人"
+        android:textColor="@drawable/selector_submit_text_color"
+        android:background="@drawable/selector_submit_text_bg"
+        android:textSize="17sp"/>
+    
+  </LinearLayout> 
+  
 
 </LinearLayout>

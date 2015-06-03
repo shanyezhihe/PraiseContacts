@@ -87,6 +87,13 @@ public class FramentCheckDetail extends Fragment {
 		}
 		});
 		
+		
+		return view;
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		 detailShare=getActivity().getSharedPreferences("SAVEDETAIL", 0);
 		 detailedit=detailShare.edit();
 		 
@@ -106,7 +113,6 @@ public class FramentCheckDetail extends Fragment {
 		SharedPreferences phoneNumShare = getActivity().getSharedPreferences("phoneNumShare",0);
 		Editor phoneNumEditor=phoneNumShare.edit();
 		phoneNumEditor.putString("PHONENUM",TVphone.getText().toString()).commit();
-		return view;
 	} 
 	
 	
