@@ -118,7 +118,7 @@ int drawable wechat_icon 0x7f020070
 int drawable windy 0x7f020071
 int drawable xiaoyu 0x7f020072
 int drawable xiaxue 0x7f020073
-int id action_settings 0x7f09005a
+int id action_settings 0x7f090059
 int id add_lable 0x7f090023
 int id bound 0x7f090030
 int id btn_back 0x7f090009
@@ -127,7 +127,6 @@ int id btn_delete 0x7f090006
 int id btn_ok 0x7f09002a
 int id btn_reset 0x7f09000a
 int id btn_save 0x7f090014
-int id btn_search 0x7f090053
 int id btn_showclasscontact 0x7f090037
 int id btn_showcolleaguecontact 0x7f090039
 int id btn_showfamilycontact 0x7f090033
@@ -135,7 +134,7 @@ int id btn_showfriendcontact 0x7f090035
 int id btn_showothercontact 0x7f09003b
 int id btn_showphonecontact 0x7f090031
 int id build_contacts 0x7f090007
-int id call 0x7f090057
+int id call 0x7f090056
 int id call_phone 0x7f090019
 int id cancle 0x7f09002f
 int id check_contact_name 0x7f090016
@@ -143,7 +142,7 @@ int id checkbackid 0x7f090015
 int id citySpinner 0x7f090012
 int id classcontacts_list 0x7f090038
 int id colleaguecontacts_list 0x7f09003a
-int id contacts 0x7f090058
+int id contacts 0x7f090057
 int id contacttitle 0x7f090025
 int id content_send 0x7f09002e
 int id detail_id 0x7f090027
@@ -158,7 +157,7 @@ int id familycontacts_list 0x7f090034
 int id friendcontacts_list 0x7f090036
 int id groupspinner 0x7f09000c
 int id id_addresslshow 0x7f090024
-int id id_autocomplete 0x7f090054
+int id id_autocomplete 0x7f090053
 int id id_check_viewpager 0x7f090018
 int id id_emailshow 0x7f090022
 int id id_from_msg_date 0x7f09004e
@@ -187,13 +186,13 @@ int id qq_lable 0x7f09001d
 int id qqnum_change 0x7f090004
 int id qqnum_edit 0x7f09000f
 int id record_id 0x7f090026
-int id seach_list 0x7f090055
-int id search_back 0x7f090056
+int id seach_list 0x7f090054
+int id search_back 0x7f090055
 int id search_contacts 0x7f090008
 int id send_sms 0x7f09001b
 int id to_phonenum 0x7f09002d
 int id view01 0x7f09001c
-int id wearther 0x7f090059
+int id wearther 0x7f090058
 int id weather_city 0x7f09003d
 int id weather_date 0x7f09003e
 int id weather_day_after 0x7f090046

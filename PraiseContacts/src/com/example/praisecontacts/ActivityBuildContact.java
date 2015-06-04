@@ -498,7 +498,8 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		int i=countShare.getInt("COUNT", 1);
+		int i=countShare.getInt("COUNT", 0);
+		int j;
 		if(v.getId()==R.id.btn_back)
 		{
 			ActivityBuildContact.this.finish();
@@ -510,12 +511,13 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			
 			itemEditor.putString("NEWNAME", "未知联系人"+i);
 			mcontentValue.put("name", "未知联系人"+i);
-			
+			j=1;
 		}
 		else
 		{
 			itemEditor.putString("NEWNAME", name);
 			mcontentValue.put("name", name);
+			j=0;
 		}
 			groupName=groupSpinner.getSelectedItem().toString();
 			
@@ -542,12 +544,16 @@ public class ActivityBuildContact extends Activity implements OnClickListener {
 			else if(groupName.equals("请选择分组"))
 			{
 				Toast.makeText(this, "请选择分组", Toast.LENGTH_SHORT).show();
+				
 			}
 			else
 			{
 				contactDB.insert(ContactTABLE_NAME, null, mcontentValue);
 				Toast.makeText(this, "新建联系人成功", Toast.LENGTH_SHORT).show();
+				if(j==1)
 				countEditor.putInt("COUNT", i+1).commit();
+				
+					
 			}
 			
 		}
