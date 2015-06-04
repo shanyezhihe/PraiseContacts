@@ -19,6 +19,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
@@ -27,6 +29,8 @@ import android.widget.Toast;
 
 
  public class ContactMainActivity extends FragmentActivity implements OnClickListener {
+	
+
 	private Fragment callFragment;
 	private Fragment contactsFragment;
 	private Fragment weatherFragment;
@@ -294,6 +298,40 @@ protected void onDestroy() {
 }
    
    
+@Override
+public boolean onCreatePanelMenu(int arg0, Menu arg1) {
+	// TODO Auto-generated method stub
+	getMenuInflater().inflate(R.menu.contact_main, arg1);
+	return true;
+}
+
+
+@Override
+public boolean onMenuItemSelected(int featureId, MenuItem item) {
+	// TODO Auto-generated method stub
+	switch(item.getItemId())
+	{
+	case R.id.id_share:
+		
+		Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "我在使用一个很nice的通讯录，你也来试试,下载地址：http://pan.baidu.com/s/1mgtbheK");
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, "赞.通讯录分享"));
+		break;
+	case R.id.id_about:
+		
+		break;
+	}
+	return true;
+}
+
+
+@Override
+public void onPanelClosed(int featureId, Menu menu) {
+	// TODO Auto-generated method stub
+	super.onPanelClosed(featureId, menu);
+}
 
    
 }

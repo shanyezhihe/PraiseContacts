@@ -2,10 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.praisecontacts.ContactMainActivity" >
 
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+  
+	<item 
+	 android:title="导入"
+	 android:id="@+id/id_import"   />
+	<item 
+	    android:title="分享"
+	    android:id="@+id/id_share"
+	    android:icon="@drawable/new_share"/>
+	<item android:title="更新"
+	    android:id="@+id/id_update"
+	    android:icon="@drawable/new_update"/>
+	<item 
+	    android:title="关于我们"
+	    android:id="@+id/id_about"
+	    />
 </menu>

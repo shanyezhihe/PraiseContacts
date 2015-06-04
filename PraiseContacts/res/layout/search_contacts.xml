@@ -13,15 +13,22 @@
       android:layout_width="match_parent"
       android:layout_height="45dp">
    
-     
-      <EditText
-  		android:id="@+id/id_autocomplete"
+     <SearchView 
+       android:id="@+id/id_autocomplete"
   		android:layout_height="45dp"
-  		android:layout_width="match_parent"
+  		android:layout_width="match_parent" 
+  		android:imeOptions="actionNone"
+  		android:iconifiedByDefault="true"
   		android:background="@null"
+  		 ></SearchView>
+<!--       <EditText -->
+<!--   		android:id="@+id/id_autocomplete" -->
+<!--   		android:layout_height="45dp" -->
+<!--   		android:layout_width="match_parent" -->
+<!--   		android:background="@null" -->
   		
-  		android:drawableLeft="@drawable/icon_search_com"
-        />  
+<!--   		android:drawableLeft="@drawable/icon_search_com" -->
+<!--         />   -->
   </RelativeLayout>
   <View 
       android:layout_height="0.5dp"
@@ -30,5 +37,6 @@
   <ListView 
       android:id="@+id/seach_list"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      android:layout_height="wrap_content"
+      android:divider="@null"/>
 </LinearLayout>

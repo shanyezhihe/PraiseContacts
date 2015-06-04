@@ -35,7 +35,7 @@
          <ListView
         android:id="@+id/phonecontacts_list"
       android:layout_width="match_parent"
-            android:dividerHeight="0.1px" 
+            android:divider="@null"
         android:layout_height="wrap_content"
         android:background="#f8f8f8"
      />
@@ -80,7 +80,7 @@
          <ListView
         android:id="@+id/familycontacts_list"
       android:layout_width="match_parent"
-            android:dividerHeight="0.1px" 
+            android:divider="@null" 
         android:layout_height="wrap_content"
         android:background="#f8f8f8"
      />
@@ -118,7 +118,7 @@
          <ListView
         android:id="@+id/friendcontacts_list"
       android:layout_width="match_parent"
-            android:dividerHeight="0.1px" 
+            android:divider="@null" 
         android:layout_height="wrap_content"
         android:background="#f8f8f8"
      />
@@ -155,7 +155,7 @@
          <ListView
         android:id="@+id/classcontacts_list"
       android:layout_width="match_parent"
-            android:dividerHeight="0.1px" 
+            android:divider="@null" 
         android:layout_height="wrap_content"
         android:background="#f8f8f8"
      />
@@ -191,7 +191,7 @@
          <ListView
         android:id="@+id/colleaguecontacts_list"
       android:layout_width="match_parent"
-            android:dividerHeight="0.1px" 
+            android:divider="@null" 
         android:layout_height="wrap_content"
         android:background="#f8f8f8"
      />
@@ -227,7 +227,7 @@
          <ListView
         android:id="@+id/othercontacts_list"
       android:layout_width="match_parent"
-            android:dividerHeight="0.1px" 
+            android:divider="@null" 
         android:layout_height="wrap_content"
         android:background="#f8f8f8"
      />
