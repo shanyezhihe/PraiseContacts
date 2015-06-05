@@ -4,8 +4,12 @@
 
   
 	<item 
-	 android:title="导入"
+	 android:title="一键导入手机通讯录"
 	 android:id="@+id/id_import"   />
+	<item 
+	 android:title="一键导出手机通讯录"
+	 android:id="@+id/id_exitport"   />
+	
 	<item 
 	    android:title="分享"
 	    android:id="@+id/id_share"

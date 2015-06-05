@@ -348,6 +348,12 @@ public boolean onMenuItemSelected(int featureId, MenuItem item) {
 	case R.id.id_about:
 		
 		break;
+		
+	case R.id.id_exitport:
+		 contactDB.delete(ContactTABLE_NAME,"Type=?", new String[]{"1"});
+		 Intent intent=new Intent("delete_action");
+		 sendBroadcast(intent);
+		break;
 	case R.id.id_import:
 		ContentValues value=new ContentValues();
 		ContentResolver resolver = ContactMainActivity.this.getContentResolver();  
@@ -365,7 +371,6 @@ public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		    value.put("phoneNum", phoneNumber);
 		    value.put("Type", "1");
 		    contactDB.insert(ContactTABLE_NAME, null, value);
-		  
 		    }}
 		break;
 	}

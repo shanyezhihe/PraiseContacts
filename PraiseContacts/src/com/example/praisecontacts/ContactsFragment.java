@@ -7,19 +7,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-
-
-
-import android.R.raw;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,13 +73,14 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 	private List<Map<String,String>> colleaguecontactNameList;
 	private List<Map<String,String>> othercontactNameList;
 	
+	private  MyBroadcast mBroadCast;
+	
 	TextView name_text;
 	int i;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-		
 		 detailShare=getActivity().getSharedPreferences("SAVEDETAIL", 0);
 		 detailedit=detailShare.edit();
 		itemShare=getActivity().getSharedPreferences("ITEMSHARE", 0);
@@ -135,7 +134,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 			String tempType=cursor.getString(cursor.getColumnIndex("Type"));
 			Map<String, String> item=new HashMap<String, String>();
 			item.put("name", tempname);
-			if(tempType.equals("1"))
+			if(tempType.equals("1")&&tempgroupname.equals(""))
 			phonecontactNameList.add(item);
 			if(tempgroupname.equals("家人"))
 				familycontactNameList.add(item);
@@ -249,6 +248,10 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		TVsearchContact.setOnClickListener(this);
 		
 		
+		 mBroadCast=new MyBroadcast();
+		 IntentFilter intentFilter=new IntentFilter("delete_action");
+			getActivity().registerReceiver(mBroadCast, intentFilter);
+		
 		return view;
 	}
 	
@@ -256,11 +259,15 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		cursor.close();
 		contactDB.close();
+		getActivity().unregisterReceiver(mBroadCast);
+		
 	}
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
+		Log.e("dsalkdj", "sadlfkj;");
 		super.onResume();
 		int i=1;
 		phonecontactNameList=new ArrayList<Map<String, String>>();
@@ -283,7 +290,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 			String tempType=cursor.getString(cursor.getColumnIndex("Type"));
 			Map<String, String> item=new HashMap<String, String>();
 			item.put("name", tempname);
-			if(tempgroupname.equals("1"));
+			if(tempType.equals("1"))
 			phonecontactNameList.add(item);
 			if(tempgroupname.equals("家人"))
 				familycontactNameList.add(item);
@@ -376,6 +383,36 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 						.setImageResource(R.drawable.common_hide_list);
 				isshowphone = true;
 				phonecontactslist.setVisibility(View.VISIBLE);
+				if(phonecontactNameList.isEmpty())
+				{
+					Log.e("dsaljf", "kongdededed");
+					mContactHelper=new MyContactsDataBaseHelper(getActivity(), ContactDATABASE_NAME);
+					contactDB=mContactHelper.getReadableDatabase();
+					cursor=contactDB.rawQuery("select * from ContactsInfoTable", null);
+					
+					
+					if(cursor.moveToFirst())
+					{do{
+						Log.e("dsaljf", "lllllllllll");
+						String tempname=cursor.getString(cursor.getColumnIndex("name"));
+						String tempgroupname=cursor.getString(cursor.getColumnIndex("groupNum"));
+						if(tempgroupname==null)
+						{
+							tempgroupname="";
+						}
+						String tempType=cursor.getString(cursor.getColumnIndex("Type"));
+						Map<String, String> item=new HashMap<String, String>();
+						item.put("name", tempname);
+						if(tempType.equals("1"))
+						phonecontactNameList.add(item);}while(cursor.moveToNext());
+					}
+					
+					phonecontactslist.setAdapter(new SimpleAdapter(getActivity(),
+							phonecontactNameList, R.layout.list_item, new String[]{"name"},new int[]{R.id.id_name} ));
+				}
+				
+				
+				
 			} else {
 				phonecontactshow
 						.setImageResource(R.drawable.common_show_list);
@@ -460,9 +497,23 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		}
 		
 	}
-
-
 	
+	
+		
+
+class MyBroadcast extends  BroadcastReceiver{
+
+	@Override
+	public void onReceive(Context arg0, Intent arg1) {
+		// TODO Auto-generated method stub
+		phonecontactNameList.clear();
+		phonecontactshow
+		.setImageResource(R.drawable.common_show_list);
+isshowphone  = false;
+
+phonecontactslist.setVisibility(View.GONE);
+	}}
+
 	
 	
 }

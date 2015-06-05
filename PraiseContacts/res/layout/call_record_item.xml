@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:orientation="vertical" >
+    <TextView 
+        android:id="@+id/record_timeago"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:textColor="#333333"
+        android:text="1333333"
+        android:layout_marginLeft="10dp"/>
+   <RelativeLayout 
+       android:layout_width="match_parent"
+        android:layout_height="20.5dp"
+       >
+         <TextView 
+       android:id="@+id/to_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="20.5dp"
+        android:textSize="13sp"
+        android:gravity="center_vertical"
+        android:textColor="#333333"
+        android:text="1333333"
+        android:layout_marginLeft="10dp" /> 
+<!--          <TextView  -->
+<!--        android:id="@+id/to_duration" -->
+<!--        android:layout_toRightOf="@id/to_phone" -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="20.5dp" -->
+<!--         android:textSize="14sp" -->
+<!--         android:gravity="center_vertical" -->
+<!--         android:textColor="#333333" -->
+<!--         android:text="1333333" -->
+<!--         android:layout_marginLeft="15dp" -->
+<!--          />  -->
+       ，
+         
+         <TextView 
+       android:id="@+id/to_status"
+        android:layout_width="wrap_content"
+        android:layout_height="20.5dp"
+        android:textSize="14sp"
+        android:gravity="center_vertical"
+        android:textColor="#00CD00"
+        android:text="1333333"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+         /> 
+   </RelativeLayout > 
+ 
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginBottom="0dp"
+        android:background="#cccccc"/>
+
+</LinearLayout>
