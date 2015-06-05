@@ -37,7 +37,7 @@ public class ActivityCheckContact extends FragmentActivity implements OnClickLis
 	
 	private LinearLayout btn_edit;
 	
-	private int COLOR_BLACK=0xFF000000;
+	private int COLOR_BLACK=0xFFffffff;
 	private int COLOR_WHITE=0xFF7A7A7A;
 	
 	private ViewPager checkViewPager;

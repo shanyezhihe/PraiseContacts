@@ -46,21 +46,21 @@ import com.android.volley.toolbox.Volley;
 
 public class WeartherFrament extends Fragment {
 
-	private TextView City;
-	private TextView Year;
-	private TextView Date;
-	private TextView Week;
-	private TextView Temp;
-	private TextView Day1;
-	private TextView Day2;
-	private TextView Day3;
-	private TextView Day1Bg;
-	private TextView Day2Bg;
-	private TextView Day3Bg;
-	private TextView YiContent;
-	private TextView JiContent;
-	private ImageView WeatherIcon;
-	private MyClick myClick;
+	private TextView city_name;
+	private TextView tempre_day1;
+	private TextView weather_day1;
+	private TextView date_day1;
+	private ImageView icon_day1;
+	private TextView date_day2;
+	private TextView day2_low;
+	private TextView  day2_high;
+	private ImageView icon_day2;
+	private TextView date_day3;
+	private TextView day3_low;
+	private TextView day3_high;
+	private ImageView icon_day3;
+	
+	//private MyClick myClick;
 	
 	public final Calendar c =  Calendar.getInstance();
 	
@@ -82,6 +82,8 @@ public class WeartherFrament extends Fragment {
 	private long mLastRequestTime;
 	private long mCurrentRequestTime;
 	
+	private SharedPreferences firstLoadWeatherShare ;
+	private Editor firstLoadWeather;
 	private static int[] weatherIcons = new int[] { R.drawable.sunny,
 			R.drawable.clear, R.drawable.fair, R.drawable.fair1,
 			R.drawable.cloudy, R.drawable.party_cloudy,
@@ -104,120 +106,35 @@ public class WeartherFrament extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 				
-		View view = inflater.inflate(R.layout.fragment_weather, container,
+		View view = inflater.inflate(R.layout.activity_weather_detail, container,
 				false);
-		
-		myClick = new MyClick();
-		
-		City = (TextView) view.findViewById(R.id.weather_city);
-		Year = (TextView) view.findViewById(R.id.weather_year);
-		Date = (TextView) view.findViewById(R.id.weather_date);
-		Week = (TextView) view.findViewById(R.id.weather_week);
-		Temp = (TextView) view.findViewById(R.id.weather_temperature);	
-		Day1 = (TextView) view.findViewById(R.id.weather_day_now);
-		Day2 = (TextView) view.findViewById(R.id.weather_day_after);
-		Day3 = (TextView) view.findViewById(R.id.weather_day_after_after);
-		Day1Bg = (TextView) view.findViewById(R.id.weather_day_now_color);
-		Day2Bg = (TextView) view.findViewById(R.id.weather_day_after_color);
-		Day3Bg = (TextView) view.findViewById(R.id.weather_day_after_after_color);
-		
-		
-	  
-		
-		WeatherIcon = (ImageView) view.findViewById(R.id.weather_icon);
-		
-		Day1Bg.setBackgroundResource(R.drawable.btn_cal_pre);
-		Day2Bg.setBackgroundResource(R.drawable.btn_cal);
-		Day3Bg.setBackgroundResource(R.drawable.btn_cal);
-		Day1.setTextColor(0xFFff0000);
-		Day2.setTextColor(0xFFffffff);
-		Day3.setTextColor(0xFFffffff);
-		
-		
-		Day1Bg.setOnClickListener(myClick);
-		Day2Bg.setOnClickListener(myClick);
-		Day3Bg.setOnClickListener(myClick);
-		
-	
-				
-		// INIT -- 获取当前日期
-		Date date = new Date();// 取时间
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(date);
-		date = calendar.getTime();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		day1 = formatter.format(date);
-		
-		SharedPreferences saveRequestLHL = getActivity().getSharedPreferences("LHLREQUESTDATE",
+		firstLoadWeatherShare = getActivity().getSharedPreferences("FIRSTSHARE",
 				0);
-		lastRequestLHL = saveRequestLHL.getString("LHLlastrequestdate", null);
-		if (day1.equals(lastRequestLHL))
-			haveRequestLHL = false;
-		else
-			haveRequestLHL = false;
+		firstLoadWeather = firstLoadWeatherShare.edit();
+		firstLoadWeather.putBoolean("ISFIRSTLOAD", true).commit();
 		
-		c.setTimeZone(TimeZone.getTimeZone("GMT+8:00")); 
-	
-		Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
+		//myClick = new MyClick();
 		
-		Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-				+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)) + "日");	
-		Week.setText("周" + getWeek(c.get(Calendar.DAY_OF_WEEK)));
-		Day1.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));
+		city_name = (TextView) view.findViewById(R.id.city_name);
+		city_name.setText("广州");
+		tempre_day1 = (TextView) view.findViewById(R.id.tempre_day1);
+		weather_day1 = (TextView) view.findViewById(R.id.weather_day1);
+		date_day1= (TextView) view.findViewById(R.id.date_day1);
 		
-		if(isBigMonth(c.get(Calendar.MONTH) + 1)){                 //大月
-			if(c.get(Calendar.DAY_OF_MONTH) == 31){
-				Day2.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+1)%31));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%31));
-			}else if(c.get(Calendar.DAY_OF_MONTH) == 30){
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%31));
-			}else{
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2));
-			}
-		}else if(isSmallMonth(c.get(Calendar.MONTH) + 1)){      //小月
-			if(c.get(Calendar.DAY_OF_MONTH) == 30){
-				Day2.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+1)%30));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%30));
-			}else if(c.get(Calendar.DAY_OF_MONTH) == 29){
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%30));
-			}else{
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2));
-			}
-		}else if(isLeapYear(c.get(Calendar.MONTH) + 1)) {       //闰年2月  
-			if(c.get(Calendar.DAY_OF_MONTH) == 29){
-				Day2.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+1)%29));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%29));
-			}else if(c.get(Calendar.DAY_OF_MONTH) == 28){
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%29));
-			}else{
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2));
-			}
-		}else if(!(isLeapYear(c.get(Calendar.MONTH) + 1))){     //非闰年2月 
-			if(c.get(Calendar.DAY_OF_MONTH) == 28){
-				Day2.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+1)%28));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%28));
-			}else if(c.get(Calendar.DAY_OF_MONTH) == 27){
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%28));
-			}else{
-				Day2.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1));
-				Day3.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2));
-			}
-		}
-				
+		icon_day1= (ImageView) view.findViewById(R.id.icon_day1);
+		date_day2 = (TextView) view.findViewById(R.id.date_day2);
+		day2_low= (TextView) view.findViewById(R.id.day2_low);	
+		day2_high = (TextView) view.findViewById(R.id.day2_high);
+		icon_day2 = (ImageView) view.findViewById(R.id.icon_day2);
+		date_day3 = (TextView) view.findViewById(R.id.date_day3);
+		day3_low = (TextView) view.findViewById(R.id.day3_low );
+		day3_high= (TextView) view.findViewById(R.id.day3_high );
+		icon_day3 = (ImageView) view.findViewById(R.id.icon_day3);
+
 		mQueue = Volley.newRequestQueue(getActivity());
-		sid = loadSid();	
-		
-		
-		
 		JsonObjectRequest mWeatherRequest = new JsonObjectRequest(
-				Method.GET,"https://api.thinkpage.cn/v2/weather/all.json?city=广州&language=zh-chs&unit=c&aqi=city&key="+ Key, null,
+				Method.GET,"https://api.thinkpage.cn/v2/weather/all.json?"
+						+ "city=CHGD000000&language=zh-chs&unit=c&aqi=city&key="+Key, null,
 				new Response.Listener<JSONObject>() {
 
 					@Override
@@ -235,6 +152,19 @@ public class WeartherFrament extends Fragment {
 								//保存以供下次使用
 								SharedPreferences savedWeather = getActivity().getSharedPreferences("SAVEDWEATHER",
 										0);
+								city_name.setText(data.getString("city_name"));
+								tempre_day1.setText(now.getString("temperature"));
+								weather_day1.setText(now.getString("text"));
+								date_day1.setText("今天");
+								icon_day1.setImageResource(weatherIcons[Integer.parseInt(now.getString("code"))]);
+								date_day2.setText(tomorrow.getString("day"));
+								day2_low.setText(tomorrow.getString("low"));
+								day2_high.setText(tomorrow.getString("high"));
+								icon_day2.setImageResource(weatherIcons[Integer.parseInt(tomorrow.getString("code1"))]);
+								date_day3.setText(tomorrow2.getString("day"));
+								day3_low.setText(tomorrow2.getString("low"));
+								day3_high.setText(tomorrow2.getString("high"));
+								icon_day3.setImageResource(weatherIcons[Integer.parseInt(tomorrow2.getString("code1"))]);
 								Editor editor = savedWeather.edit();
 								editor.putString("City", data.getString("city_name"));
 								editor.putString("Day1Temp", now.getString("temperature"));
@@ -252,9 +182,7 @@ public class WeartherFrament extends Fragment {
 								editor.putString("Day3IconIndexNight", tomorrow2.getString("code2"));
 								editor.commit();
 								
-								City.setText(data.getString("city_name"));
-								Temp.setText(now.getString("temperature") + String.valueOf(centigrade));
-								WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(now.getString("code"))]);													
+									
 							} 
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -268,228 +196,22 @@ public class WeartherFrament extends Fragment {
 					}
 				}) {
 		};
+		if(firstLoadWeatherShare.getBoolean("ISFIRSTLOAD", true))
+		{
+			mQueue.add(mWeatherRequest);
+			firstLoadWeather.putBoolean("ISFIRSTLOAD", false).commit();
+		}
 		mLastRequestTime = loadLastRequestTime();
 		mCurrentRequestTime = System.currentTimeMillis();
-		if((mCurrentRequestTime - mLastRequestTime)/1000 >= 10800){
+		if((mCurrentRequestTime - mLastRequestTime)/1000 >=10800){
 			saveLastRequestTime(mCurrentRequestTime);
 			mQueue.add(mWeatherRequest);
-		}else{
-			SharedPreferences loadWeather = getActivity().getSharedPreferences("SAVEDWEATHER",
-					0);
-			
-			City.setText("广州");
-			Temp.setText(loadWeather.getString("Day1Temp", null) + String.valueOf(centigrade));		
-			WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day1IconIndex", "0"))]);
 		}
-		
+			
+
 		return view;
 	}
-	
-	public class MyClick implements OnClickListener{
-		SharedPreferences loadWeather = getActivity().getSharedPreferences("SAVEDWEATHER",
-				0);
-		SharedPreferences loadLHL = getActivity().getSharedPreferences("SAVEDLHL",
-				0);
-		
-		@Override
-		public void onClick(View v) {
-			switch(v.getId()){
-			case R.id.weather_day_now_color:
-				Day1Bg.setBackgroundResource(R.drawable.btn_cal_pre);
-				Day2Bg.setBackgroundResource(R.drawable.btn_cal);
-				Day3Bg.setBackgroundResource(R.drawable.btn_cal);
-				
-				Day1.setTextColor(0xFFff0000);
-				Day2.setTextColor(0xFFffffff);
-				Day3.setTextColor(0xFFffffff);
-				
-				Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-				Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-						+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)) + "日");	
-				Week.setText("周" + getWeek(c.get(Calendar.DAY_OF_WEEK)));
-				
-				Temp.setText(loadWeather.getString("Day1Temp", null) + String.valueOf(centigrade));
-				
-				WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day1IconIndex", "0"))]);
-				
-				
-				break;
-			case R.id.weather_day_after_color:
-				Day2Bg.setBackgroundResource(R.drawable.btn_cal_pre);
-				Day1Bg.setBackgroundResource(R.drawable.btn_cal);
-				Day3Bg.setBackgroundResource(R.drawable.btn_cal);
-				
-				Day2.setTextColor(0xFFff0000);
-				Day1.setTextColor(0xFFffffff);
-				Day3.setTextColor(0xFFffffff);
-				
-				if(isBigMonth(c.get(Calendar.MONTH) + 1)){                 //大月
-					if(c.get(Calendar.DAY_OF_MONTH) == 31){
-						if((c.get(Calendar.MONTH) + 1) == 12){   
-							
-							Year.setText(String.valueOf(c.get(Calendar.YEAR) + 1) + "年");
-							Date.setText( String.valueOf(1) + "月" 
-									+ String.valueOf(1) + "日");
-						}else{
-							Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-							Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-									+ String.valueOf(1) + "日");
-						}
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1) + "日");	
-					}
-				}else if(isSmallMonth(c.get(Calendar.MONTH) + 1)){      //小月
-					if(c.get(Calendar.DAY_OF_MONTH) == 30){
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-								+ String.valueOf(1) + "日");
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1) + "日");
-					}
-				}else if(isLeapYear(c.get(Calendar.MONTH) + 1)) {       //闰年2月  
-					if(c.get(Calendar.DAY_OF_MONTH) == 29){
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-								+ String.valueOf(1) + "日");
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1) + "日");
-					}
-				}else if(!(isLeapYear(c.get(Calendar.MONTH) + 1))){     //非闰年2月 
-					if(c.get(Calendar.DAY_OF_MONTH) == 28){
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-								+ String.valueOf(1) + "日");
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+1) + "日");
-					}
-				}
-				
-				Week.setText("周" + getWeek(c.get(Calendar.DAY_OF_WEEK)+1));
-				
-				Temp.setText(loadWeather.getString("Day2TempHigh", null) + String.valueOf(centigrade));
-				
-				WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day2IconIndexDay", "0"))]);
-				
-				
-				break;
-			case R.id.weather_day_after_after_color:
-				Day3Bg.setBackgroundResource(R.drawable.btn_cal_pre);
-				Day1Bg.setBackgroundResource(R.drawable.btn_cal);
-				Day2Bg.setBackgroundResource(R.drawable.btn_cal);
-				
-				Day3.setTextColor(0xFFff0000);
-				Day2.setTextColor(0xFFffffff);
-				Day1.setTextColor(0xFFffffff);
-				
-				if(isBigMonth(c.get(Calendar.MONTH) + 1)){                 //大月
-					if(c.get(Calendar.DAY_OF_MONTH) == 31 || c.get(Calendar.DAY_OF_MONTH) == 30){
-						if((c.get(Calendar.MONTH) + 1) == 12){  
-							Year.setText(String.valueOf(c.get(Calendar.YEAR) + 1) + "年");
-							Date.setText(String.valueOf(1) + "月" 
-									+ String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%31) + "日");
-						}else{
-							Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-							Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-									+ String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%31) + "日");
-						}
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText( String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2) + "日");	
-					}
-				}else if(isSmallMonth(c.get(Calendar.MONTH) + 1)){      //小月
-					if(c.get(Calendar.DAY_OF_MONTH) == 30 || c.get(Calendar.DAY_OF_MONTH) == 29){
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-								+ String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%30) + "日");
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2) + "日");
-					}
-				}else if(isLeapYear(c.get(Calendar.MONTH) + 1)) {       //闰年2月  
-					if(c.get(Calendar.DAY_OF_MONTH) == 29 || c.get(Calendar.DAY_OF_MONTH) == 28){
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-								+ String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%29) + "日");
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2) + "日");
-					}
-				}else if(!(isLeapYear(c.get(Calendar.MONTH) + 1))){     //非闰年2月 
-					if(c.get(Calendar.DAY_OF_MONTH) == 28 || c.get(Calendar.DAY_OF_MONTH) == 27){
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1 + 1) + "月" 
-								+ String.valueOf((c.get(Calendar.DAY_OF_MONTH)+2)%28) + "日");
-					}else{
-						Year.setText(String.valueOf(c.get(Calendar.YEAR)) + "年");
-						Date.setText(String.valueOf(c.get(Calendar.MONTH) + 1) + "月" 
-								+ String.valueOf(c.get(Calendar.DAY_OF_MONTH)+2) + "日");
-					}
-				}	
-				Week.setText("周" + getWeek(c.get(Calendar.DAY_OF_WEEK)+2));
-				
-				Temp.setText(loadWeather.getString("Day3TempHigh", null) + String.valueOf(centigrade));
-				
-				WeatherIcon.setImageResource(weatherIcons[Integer.parseInt(loadWeather.getString("Day3IconIndexDay", "0"))]);
-			
-				break;
-			default:
-				break;
-			}
-		}
-		
-	}
-	
-	
 
-	public String getWeek(int i){
-		String week = null;
-		if(i > 7) i = i - 7;
-		if(i == 1){
-			week ="日";
-		}else if(i == 2){
-			week ="一";
-		}else if(i == 3){
-			week ="二";
-		}else if(i == 4){
-			week ="三";
-		}else if(i == 5){
-			week ="四";
-		}else if(i == 6){
-			week ="五";
-		}else if(i == 7){
-			week ="六";
-		}
-		return week;
-	}
-	
-	public boolean isBigMonth(int m) {
-		if(m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) 
-			return true;	
-		return false;
-	}
-	
-	public boolean isSmallMonth(int m) {
-		if(m == 4 || m == 6 || m == 9 || m == 11) 
-			return true;	
-		return false;
-	}
-	
-	public boolean isLeapYear(int y) {
-		if((y%4==0 && y%100!=0) || y%400==0) 
-			return true;	
-		return false;
-	}
 	
 	public void saveLastRequestTime(long time) {
 		SharedPreferences savedTime = getActivity().getSharedPreferences("SAVEDTIME",

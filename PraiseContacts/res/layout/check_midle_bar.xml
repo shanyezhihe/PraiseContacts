@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-     android:background="#aec5e8"
+     android:background="#0065a1"
       android:id="@+id/contacttitle"
     android:orientation="horizontal" >
  
@@ -25,6 +25,6 @@
      android:gravity="center"
      android:text="详情"
      android:textSize="20sp"
-     android:textColor="#000000"/> 
+     android:textColor="#ffffff"/> 
 
 </LinearLayout>
