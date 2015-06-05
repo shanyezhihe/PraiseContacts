@@ -5,11 +5,16 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +23,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TabHost.OnTabChangeListener;
 
 
  public class ContactMainActivity extends FragmentActivity implements OnClickListener {
@@ -54,11 +61,30 @@ import android.widget.Toast;
 	
 	  private MyServiceReceiver mReceiver01;
       private MyServiceReceiver mReceiver02;
+      
+      private static final String[] PHONES_PROJECTION = new String[] {  
+          Phone.DISPLAY_NAME, Phone.NUMBER }; 
+      
+      private static final int DATABASE_VERSION = 1;
+  	private static final String ContactDATABASE_NAME = "ContactsDB.db";
+  	public static final String ContactTABLE_NAME = "ContactsInfoTable";
+  	private MyContactsDataBaseHelper mContactHelper;
+  	private SQLiteDatabase contactDB;
+  	private Cursor mcursor;
+  	
+  	/**联系人显示名称**/  
+    private static final int PHONES_DISPLAY_NAME_INDEX = 0;  
+      
+    /**电话号码**/  
+    private static final int PHONES_NUMBER_INDEX = 1;  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts_main);
         getActionBar().hide();
+        
+        mContactHelper=new MyContactsDataBaseHelper(ContactMainActivity.this, ContactDATABASE_NAME);
+		contactDB=mContactHelper.getReadableDatabase();
         
         phoneNumShare = this.getSharedPreferences("phoneNumShare",0);
         
@@ -321,6 +347,26 @@ public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		break;
 	case R.id.id_about:
 		
+		break;
+	case R.id.id_import:
+		ContentValues value=new ContentValues();
+		ContentResolver resolver = ContactMainActivity.this.getContentResolver();  
+		// 获取手机联系人  
+		Cursor phoneCursor = resolver.query(Phone.CONTENT_URI,PHONES_PROJECTION, null, null, null);  
+		if (phoneCursor != null) {  
+		    while (phoneCursor.moveToNext()) {  
+		    String contactName = phoneCursor.getString(PHONES_DISPLAY_NAME_INDEX);  
+		    value.put("name", contactName);
+		    //得到手机号码  
+		    String phoneNumber = phoneCursor.getString(PHONES_NUMBER_INDEX);  
+		    //当手机号码为空的或者为空字段 跳过当前循环  
+		    if (TextUtils.isEmpty(phoneNumber))  
+		        continue;  
+		    value.put("phoneNum", phoneNumber);
+		    value.put("Type", "1");
+		    contactDB.insert(ContactTABLE_NAME, null, value);
+		  
+		    }}
 		break;
 	}
 	return true;

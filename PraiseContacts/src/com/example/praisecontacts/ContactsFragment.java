@@ -127,12 +127,15 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		cursor=contactDB.rawQuery("select * from ContactsInfoTable", null);
 		if(cursor.moveToFirst())
 		{do{
+			
 			String tempname=cursor.getString(cursor.getColumnIndex("name"));
 			String tempgroupname=cursor.getString(cursor.getColumnIndex("groupNum"));
+			if(tempgroupname==null)
+				tempgroupname="";
 			String tempType=cursor.getString(cursor.getColumnIndex("Type"));
 			Map<String, String> item=new HashMap<String, String>();
 			item.put("name", tempname);
-			if(tempType=="1")
+			if(tempType.equals("1"))
 			phonecontactNameList.add(item);
 			if(tempgroupname.equals("家人"))
 				familycontactNameList.add(item);
@@ -273,10 +276,14 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		{do{
 			String tempname=cursor.getString(cursor.getColumnIndex("name"));
 			String tempgroupname=cursor.getString(cursor.getColumnIndex("groupNum"));
+			if(tempgroupname==null)
+			{
+				tempgroupname="";
+			}
 			String tempType=cursor.getString(cursor.getColumnIndex("Type"));
 			Map<String, String> item=new HashMap<String, String>();
 			item.put("name", tempname);
-			if(tempType=="1")
+			if(tempgroupname.equals("1"));
 			phonecontactNameList.add(item);
 			if(tempgroupname.equals("家人"))
 				familycontactNameList.add(item);
