@@ -341,6 +341,7 @@ public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		
 		Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
+        
         sendIntent.putExtra(Intent.EXTRA_TEXT, "我在使用一个很nice的通讯录，你也来试试,下载地址：http://pan.baidu.com/s/1mgtbheK");
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, "赞.通讯录分享"));

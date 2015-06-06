@@ -1,41 +1,27 @@
 package com.example.praisecontacts;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.PendingIntent;
-import android.app.PendingIntent.CanceledException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -60,6 +46,9 @@ public class WeartherFrament extends Fragment {
 	private TextView day3_high;
 	private ImageView icon_day3;
 	
+	private double latitude=0.0;  
+	private double longitude =0.0;  
+	
 	//private MyClick myClick;
 	
 	public final Calendar c =  Calendar.getInstance();
@@ -68,7 +57,7 @@ public class WeartherFrament extends Fragment {
 	
 	
 
-	private URL weatherURL;
+	private String weatherURL;
 	private String Key = "XSI7AKYYBY";
 	private RequestQueue mQueue;
 	
@@ -81,6 +70,9 @@ public class WeartherFrament extends Fragment {
 	
 	private long mLastRequestTime;
 	private long mCurrentRequestTime;
+	
+
+
 	
 	private SharedPreferences firstLoadWeatherShare ;
 	private Editor firstLoadWeather;
@@ -130,11 +122,66 @@ public class WeartherFrament extends Fragment {
 		day3_low = (TextView) view.findViewById(R.id.day3_low );
 		day3_high= (TextView) view.findViewById(R.id.day3_high );
 		icon_day3 = (ImageView) view.findViewById(R.id.icon_day3);
+		
+		LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);  
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){  
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);  
+            if(location != null){  
+                latitude = location.getLatitude();  
+                longitude = location.getLongitude();  
+                Log.e("Map", "Location changed : Lat: "    
+                        + location.getLatitude() + " Lng: "    
+                        + location.getLongitude());     
+                weatherURL ="https://api.thinkpage.cn/v2/weather/all.json?"
+						+ "city="+String.valueOf(latitude)+":"+String.valueOf(longitude)+
+						"&language=zh-chs&unit=c&aqi=city&key="+Key;
+                }  
+        }else{  
+            LocationListener locationListener = new LocationListener() {  
+                  
+                // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数  
+                @Override  
+                public void onStatusChanged(String provider, int status, Bundle extras) {  
+                      
+                }  
+                  
+                // Provider被enable时触发此函数，比如GPS被打开  
+                @Override  
+                public void onProviderEnabled(String provider) {  
+                      
+                }  
+                  
+                // Provider被disable时触发此函数，比如GPS被关闭   
+                @Override  
+                public void onProviderDisabled(String provider) {  
+                      
+                }  
+                  
+                //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发   
+                @Override  
+                public void onLocationChanged(Location location) {  
+                    if (location != null) {     
+                        Log.e("Map", "Location changed : Lat: "    
+                        + location.getLatitude() + " Lng: "    
+                        + location.getLongitude());   
+                      
+                    }  
+                }  
+            };  
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);     
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);     
+            if(location != null){     
+                latitude = location.getLatitude(); //经度     
+                longitude = location.getLongitude(); //纬度  
+                weatherURL ="https://api.thinkpage.cn/v2/weather/all.json?"
+						+ "city="+String.valueOf(latitude)+":"+String.valueOf(longitude)+
+						"&language=zh-chs&unit=c&aqi=city&key="+Key;
+            }     
+        }  
 
 		mQueue = Volley.newRequestQueue(getActivity());
 		JsonObjectRequest mWeatherRequest = new JsonObjectRequest(
-				Method.GET,"https://api.thinkpage.cn/v2/weather/all.json?"
-						+ "city=CHGD000000&language=zh-chs&unit=c&aqi=city&key="+Key, null,
+				Method.GET,weatherURL, null,
 				new Response.Listener<JSONObject>() {
 
 					@Override
@@ -152,31 +199,31 @@ public class WeartherFrament extends Fragment {
 								//保存以供下次使用
 								SharedPreferences savedWeather = getActivity().getSharedPreferences("SAVEDWEATHER",
 										0);
-								city_name.setText(data.getString("city_name"));
-								tempre_day1.setText(now.getString("temperature"));
+								city_name.setText("当前定位城市："+data.getString("city_name"));
+								tempre_day1.setText(now.getString("temperature")+String.valueOf(centigrade));
 								weather_day1.setText(now.getString("text"));
 								date_day1.setText("今天");
 								icon_day1.setImageResource(weatherIcons[Integer.parseInt(now.getString("code"))]);
 								date_day2.setText(tomorrow.getString("day"));
-								day2_low.setText(tomorrow.getString("low"));
-								day2_high.setText(tomorrow.getString("high"));
+								day2_low.setText(tomorrow.getString("low")+String.valueOf(centigrade));
+								day2_high.setText(tomorrow.getString("high")+String.valueOf(centigrade));
 								icon_day2.setImageResource(weatherIcons[Integer.parseInt(tomorrow.getString("code1"))]);
 								date_day3.setText(tomorrow2.getString("day"));
-								day3_low.setText(tomorrow2.getString("low"));
-								day3_high.setText(tomorrow2.getString("high"));
+								day3_low.setText(tomorrow2.getString("low")+String.valueOf(centigrade));
+								day3_high.setText(tomorrow2.getString("high")+String.valueOf(centigrade));
 								icon_day3.setImageResource(weatherIcons[Integer.parseInt(tomorrow2.getString("code1"))]);
 								Editor editor = savedWeather.edit();
 								editor.putString("City", data.getString("city_name"));
 								editor.putString("Day1Temp", now.getString("temperature"));
 								editor.putString("Day1Weather", now.getString("text"));
 								editor.putString("Day1IconIndex", now.getString("code"));
-								editor.putString("Day2TempLow", tomorrow.getString("low"));
-								editor.putString("Day2TempHigh", tomorrow.getString("high"));
+								editor.putString("Day2TempLow", tomorrow.getString("low")+String.valueOf(centigrade));
+								editor.putString("Day2TempHigh", tomorrow.getString("high")+String.valueOf(centigrade));
 								editor.putString("Day2Weather", tomorrow.getString("text"));
 								editor.putString("Day2IconIndexDay", tomorrow.getString("code1"));
 								editor.putString("Day2IconIndexNight", tomorrow.getString("code2"));
-								editor.putString("Day3TempLow", tomorrow2.getString("low"));
-								editor.putString("Day3TempHigh", tomorrow2.getString("high"));
+								editor.putString("Day3TempLow", tomorrow2.getString("low")+String.valueOf(centigrade));
+								editor.putString("Day3TempHigh", tomorrow2.getString("high")+String.valueOf(centigrade));
 								editor.putString("Day3Weather", tomorrow2.getString("text"));
 								editor.putString("Day3IconIndexDay", tomorrow2.getString("code1"));
 								editor.putString("Day3IconIndexNight", tomorrow2.getString("code2"));
