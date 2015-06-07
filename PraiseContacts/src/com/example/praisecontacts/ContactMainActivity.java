@@ -4,6 +4,7 @@ package com.example.praisecontacts;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -13,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.Fragment;
@@ -32,7 +34,6 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TabHost.OnTabChangeListener;
 
 
  public class ContactMainActivity extends FragmentActivity implements OnClickListener {
@@ -77,6 +78,8 @@ import android.widget.TabHost.OnTabChangeListener;
       
     /**电话号码**/  
     private static final int PHONES_NUMBER_INDEX = 1;  
+    
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -335,47 +338,75 @@ public boolean onCreatePanelMenu(int arg0, Menu arg1) {
 @Override
 public boolean onMenuItemSelected(int featureId, MenuItem item) {
 	// TODO Auto-generated method stub
-	switch(item.getItemId())
-	{
-	case R.id.id_share:
-		
-		Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "我在使用一个很nice的通讯录，你也来试试,下载地址：http://pan.baidu.com/s/1mgtbheK");
-        sendIntent.setType("text/plain");
-        startActivity(Intent.createChooser(sendIntent, "赞.通讯录分享"));
-		break;
-	case R.id.id_about:
-		
-		break;
-		
-	case R.id.id_exitport:
-		 contactDB.delete(ContactTABLE_NAME,"Type=?", new String[]{"1"});
-		 Intent intent=new Intent("delete_action");
-		 sendBroadcast(intent);
-		break;
-	case R.id.id_import:
-		ContentValues value=new ContentValues();
-		ContentResolver resolver = ContactMainActivity.this.getContentResolver();  
-		// 获取手机联系人  
-		Cursor phoneCursor = resolver.query(Phone.CONTENT_URI,PHONES_PROJECTION, null, null, null);  
-		if (phoneCursor != null) {  
-		    while (phoneCursor.moveToNext()) {  
-		    String contactName = phoneCursor.getString(PHONES_DISPLAY_NAME_INDEX);  
-		    value.put("name", contactName);
-		    //得到手机号码  
-		    String phoneNumber = phoneCursor.getString(PHONES_NUMBER_INDEX);  
-		    //当手机号码为空的或者为空字段 跳过当前循环  
-		    if (TextUtils.isEmpty(phoneNumber))  
-		        continue;  
-		    value.put("phoneNum", phoneNumber);
-		    value.put("Type", "1");
-		    contactDB.insert(ContactTABLE_NAME, null, value);
-		    }}
-		break;
-	}
-	return true;
+		switch (item.getItemId()) {
+		case R.id.id_share:
+
+			Intent sendIntent = new Intent();
+			sendIntent.setAction(Intent.ACTION_SEND);
+			sendIntent
+					.putExtra(Intent.EXTRA_TEXT,
+							"我在使用一个很nice的通讯录，你也来试试,下载地址：http://pan.baidu.com/s/1mgtbheK");
+			sendIntent.setType("text/plain");
+			startActivity(Intent.createChooser(sendIntent, "赞.通讯录分享"));
+			break;
+		case R.id.id_about:
+
+			break;
+		case R.id.id_exitport:
+			Cursor cursor = contactDB.rawQuery(
+					"select * from ContactsInfoTable where Type=?",
+					new String[] { "1" });
+			if (cursor.moveToFirst()) {
+				contactDB.delete(ContactTABLE_NAME, "Type=?",
+						new String[] { "1" });
+				Intent intent = new Intent("delete_action");
+				sendBroadcast(intent);
+				Toast.makeText(ContactMainActivity.this, "手机联系人导出成功",
+						Toast.LENGTH_SHORT).show();
+				cursor.close();
+			} else {
+				Toast.makeText(ContactMainActivity.this, "手机通讯录列表不存在",
+						Toast.LENGTH_SHORT).show();
+				cursor.close();
+			}
+			break;
+		case R.id.id_import:
+			// ContentValues value=new ContentValues();
+			// ContentResolver resolver =
+			// ContactMainActivity.this.getContentResolver();
+			// // 获取手机联系人
+			// Cursor phoneCursor =
+			// resolver.query(Phone.CONTENT_URI,PHONES_PROJECTION, null, null,
+			// null);
+			// if (phoneCursor != null) {
+			// while (phoneCursor.moveToNext()) {
+			// String contactName =
+			// phoneCursor.getString(PHONES_DISPLAY_NAME_INDEX);
+			// value.put("name", contactName);
+			// //得到手机号码
+			// String phoneNumber = phoneCursor.getString(PHONES_NUMBER_INDEX);
+			// //当手机号码为空的或者为空字段 跳过当前循环
+			// if (TextUtils.isEmpty(phoneNumber))
+			// continue;
+			// value.put("phoneNum", phoneNumber);
+			// value.put("Type", "1");
+			// contactDB.insert(ContactTABLE_NAME, null, value);
+			//
+			// }}
+			Cursor mcursor = contactDB.rawQuery(
+					"select * from ContactsInfoTable where Type=?",
+					new String[] { "1" });
+			if (!mcursor.moveToFirst()) {
+				new MyAsyncTask().execute("");
+				mcursor.close();
+			} else {
+				Toast.makeText(ContactMainActivity.this, "请勿重复导入",
+						Toast.LENGTH_SHORT).show();
+				mcursor.close();
+			}
+			break;
+		}
+		return true;
 }
 
 
@@ -384,6 +415,82 @@ public void onPanelClosed(int featureId, Menu menu) {
 	// TODO Auto-generated method stub
 	super.onPanelClosed(featureId, menu);
 }
+
+
+	class MyAsyncTask extends AsyncTask<String , Integer, String>{
+		ProgressDialog p;
+		int count=0;
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			
+			p=	new ProgressDialog(ContactMainActivity.this);
+			p.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			
+			ContentValues value=new ContentValues();
+			ContentResolver resolver = ContactMainActivity.this.getContentResolver();  
+			// 获取手机联系人  
+			Cursor phoneCursor = resolver.query(Phone.CONTENT_URI,PHONES_PROJECTION, null, null, null);  
+			if (phoneCursor != null) {  
+				if(phoneCursor.moveToFirst())
+			    while (phoneCursor.moveToNext()) {  
+			    count++;
+			    }}
+			p.setMax(count);
+			p.show();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			p.dismiss();
+			Toast.makeText(ContactMainActivity.this, "手机联系人导入成功",Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+			
+			p.setProgress(values[0]);
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			ContentValues value=new ContentValues();
+			ContentResolver resolver = ContactMainActivity.this.getContentResolver();  
+			// 获取手机联系人  
+			Cursor phoneCursor = resolver.query(Phone.CONTENT_URI,PHONES_PROJECTION, null, null, null);  
+			if (phoneCursor != null) {  
+				int i=0;
+			    while (phoneCursor.moveToNext()) {  
+			    String contactName = phoneCursor.getString(PHONES_DISPLAY_NAME_INDEX);  
+			    value.put("name", contactName);
+			    //得到手机号码  
+			    String phoneNumber = phoneCursor.getString(PHONES_NUMBER_INDEX);  
+			    //当手机号码为空的或者为空字段 跳过当前循环  
+			    if (TextUtils.isEmpty(phoneNumber))  
+			        continue;  
+			    value.put("phoneNum", phoneNumber);
+			    value.put("Type", "1");
+			    contactDB.insert(ContactTABLE_NAME, null, value);
+			    publishProgress(i);
+			    i++;
+			    }} 
+			 
+			return null;
+		}
+		
+	}
+
+
+
+
+
+
 
    
 }

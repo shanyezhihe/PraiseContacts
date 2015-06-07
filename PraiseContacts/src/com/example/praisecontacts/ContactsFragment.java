@@ -27,8 +27,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactsFragment extends Fragment implements OnClickListener{
 	
@@ -45,6 +47,13 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 	private ListView classcontactslist;
 	private ListView colleaguecontactslist;
 	private ListView othercontactslist;
+	
+	private RelativeLayout  rlphonecontactshow;
+	private RelativeLayout rlfamilycontactshow;
+	private RelativeLayout  rlfriendcontactshow;
+	private RelativeLayout  rlclasscontactshow;
+	private RelativeLayout  rlcolleaguecontactshow;
+	private RelativeLayout  rlothercontactshow;
 	
 	private ImageView phonecontactshow;
 	private ImageView familycontactshow;
@@ -108,17 +117,30 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 		othercontactslist.setVisibility(View.GONE);
 		
 		phonecontactshow=(ImageView) view.findViewById(R.id.btn_showphonecontact);
-		phonecontactshow.setOnClickListener(this);
+		//phonecontactshow.setOnClickListener(this);
 		familycontactshow=(ImageView) view.findViewById(R.id.btn_showfamilycontact);
-		familycontactshow.setOnClickListener(this);
+		//familycontactshow.setOnClickListener(this);
 		friendcontactshow=(ImageView) view.findViewById(R.id.btn_showfriendcontact);
-		friendcontactshow.setOnClickListener(this);
+//		friendcontactshow.setOnClickListener(this);
 		classcontactshow=(ImageView) view.findViewById(R.id.btn_showclasscontact);
-		classcontactshow.setOnClickListener(this);
+//		classcontactshow.setOnClickListener(this);
 		colleaguecontactshow=(ImageView) view.findViewById(R.id.btn_showcolleaguecontact);
-		colleaguecontactshow.setOnClickListener(this);
+//		colleaguecontactshow.setOnClickListener(this);
 		othercontactshow=(ImageView) view.findViewById(R.id.btn_showothercontact);
-		othercontactshow.setOnClickListener(this);
+//		othercontactshow.setOnClickListener(this);
+		
+		rlphonecontactshow=(RelativeLayout) view.findViewById(R.id.rl_showphonecontact);
+		rlphonecontactshow.setOnClickListener(this);
+		rlfamilycontactshow=(RelativeLayout) view.findViewById(R.id.rl_showfamilycontact);
+		rlfamilycontactshow.setOnClickListener(this);
+		rlfriendcontactshow=(RelativeLayout) view.findViewById(R.id.rl_showfriendcontact);
+		rlfriendcontactshow.setOnClickListener(this);
+		rlclasscontactshow=(RelativeLayout) view.findViewById(R.id.rl_showclasscontact);
+		rlclasscontactshow.setOnClickListener(this);
+		rlcolleaguecontactshow=(RelativeLayout) view.findViewById(R.id.rl_showcolleaguecontact);
+		rlcolleaguecontactshow.setOnClickListener(this);
+		rlothercontactshow=(RelativeLayout) view.findViewById(R.id.rl_showothercontact);
+		rlothercontactshow.setOnClickListener(this);
 		
 		
 		mContactHelper=new MyContactsDataBaseHelper(getActivity(), ContactDATABASE_NAME);
@@ -377,7 +399,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 			Intent searchIntent=new Intent(getActivity(),ActivitySearchContact.class);
 			startActivity(searchIntent);
 			break;
-		case R.id.btn_showphonecontact:
+		case R.id.rl_showphonecontact:
 			if (!isshowphone) {
 				phonecontactshow
 						.setImageResource(R.drawable.common_hide_list);
@@ -421,7 +443,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 				phonecontactslist.setVisibility(View.GONE);
 			}
 			break;
-		case R.id.btn_showfamilycontact:
+		case R.id.rl_showfamilycontact:
 			if (!isshowfamily) {
 				familycontactshow
 						.setImageResource(R.drawable.common_hide_list);
@@ -435,7 +457,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 				familycontactslist.setVisibility(View.GONE);
 			}
 			break;
-		case R.id.btn_showfriendcontact:
+		case R.id.rl_showfriendcontact:
 			if (!isshowfriend) {
 				friendcontactshow
 						.setImageResource(R.drawable.common_hide_list);
@@ -449,7 +471,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 				friendcontactslist.setVisibility(View.GONE);
 			}
 			break;
-		case R.id.btn_showclasscontact:
+		case R.id.rl_showclasscontact:
 			if (!isshowclass) {
 				classcontactshow
 						.setImageResource(R.drawable.common_hide_list);
@@ -463,7 +485,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 				classcontactslist.setVisibility(View.GONE);
 			}
 			break;
-		case R.id.btn_showcolleaguecontact:
+		case R.id.rl_showcolleaguecontact:
 			if (!isshowcolleague) {
 				colleaguecontactshow
 						.setImageResource(R.drawable.common_hide_list);
@@ -478,7 +500,7 @@ public class ContactsFragment extends Fragment implements OnClickListener{
 			}
 			
 			break;
-		case R.id.btn_showothercontact:
+		case R.id.rl_showothercontact:
 			
 			if (!isshowother) {
 				othercontactshow
